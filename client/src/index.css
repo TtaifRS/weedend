@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.gradient-login-page {
+  background-color: hsla(135, 100%, 80%, 1);
+  background-image: radial-gradient(
+      at 96% 95%,
+      hsla(139, 76%, 79%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 2% 67%, hsla(86, 77%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 78% 45%, hsla(118, 84%, 72%, 1) 0px, transparent 50%),
+    radial-gradient(at 52% 57%, hsla(89, 64%, 68%, 1) 0px, transparent 50%),
+    radial-gradient(at 43% 19%, hsla(88, 84%, 66%, 1) 0px, transparent 50%),
+    radial-gradient(at 20% 84%, hsla(111, 74%, 77%, 1) 0px, transparent 50%),
+    radial-gradient(at 45% 21%, hsla(85, 62%, 76%, 1) 0px, transparent 50%);
+}
+
+.button-hover:hover {
+  border: 1px solid rgba(190, 242, 100, 0.5);
+  background-color: white;
+}

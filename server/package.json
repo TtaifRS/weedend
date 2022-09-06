@@ -1,0 +1,39 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Wiidsk and Greenline API",
+  "main": "server.js",
+  "scripts": {
+    "app": "concurrently \"npm run dev\" \"cd ../client && npm start\"",
+    "start": "node server.js",
+    "dev": "nodemon app.js",
+    "prod": "SET NODE_ENV=production & nodemon app.js"
+  },
+  "type": "module",
+  "author": "Taif Rahaman",
+  "engines": {
+    "node": "14.15.1"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.21",
+    "moesif-nodejs": "^3.2.2",
+    "moment": "^2.29.4",
+    "mongoose": "^6.4.0",
+    "node-fetch": "^3.2.6",
+    "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.6",
+    "nodemon": "^2.0.16",
+    "stripe": "^9.14.0",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "concurrently": "^7.3.0"
+  }
+}
