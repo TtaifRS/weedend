@@ -8,5 +8,6 @@ import Dashboard from './Dashboard';
 import ChartPie from './ChartPie';
 import ChartBar from './ChartBar';
 import CardTable from './CardTable';
+import ProductForm from './ProductForm';
 
-export { Button, Navbar, UserDropDown, Sidebar, CardStats, Header, Dashboard, ChartPie, ChartBar, CardTable };
+export { Button, Navbar, UserDropDown, Sidebar, CardStats, Header, Dashboard, ChartPie, ChartBar, CardTable, ProductForm };

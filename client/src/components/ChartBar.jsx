@@ -53,8 +53,9 @@ const ChartBar = () => {
   const error = useStatsStore((state) => state.error);
   const updatePerDay = useStatsStore((state) => state.updatePerDay);
 
+  console.log(error);
   if (error) {
-    return <div>error</div>;
+    return <div>{error}</div>;
   }
   if (!loading) {
     const amount = [0, 0, 0, 0, 0, 0, 0];

@@ -10,6 +10,7 @@ const HomePage = () => {
   const loading = useUserStore((state) => state.loading);
   const error = useUserStore((state) => state.error);
   const fetchUser = useUserStore((state) => state.fetchUser);
+  const userError = useUserStore((state) => state.error);
 
   useEffect(() => {
     const fetch = async () => {
@@ -21,6 +22,13 @@ const HomePage = () => {
   if (loading) {
     return (
       <div>Loading</div>
+    );
+  }
+
+  console.log('token', token);
+  if (userError) {
+    return (
+      <Navigate to="/login" />
     );
   }
 

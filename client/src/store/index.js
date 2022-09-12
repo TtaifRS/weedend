@@ -67,7 +67,7 @@ let userStore = (set) => ({
       if (data.error) {
         set({
           loading: false,
-          error: 'Email or Password is wrong!',
+          error: 'something went wrong',
         });
       } else {
         set({
@@ -82,7 +82,7 @@ let userStore = (set) => ({
     } catch (err) {
       set({
         loading: false,
-        error: 'Something went wrong',
+        error: 'something went wrong',
       });
     }
   },
@@ -115,7 +115,7 @@ let statsStore = (set) => ({
       if (data.error) {
         set({
           loading: false,
-          error: 'Email or Password is wrong!',
+          error: data.error.name,
         });
       } else {
         const {
@@ -142,7 +142,7 @@ let statsStore = (set) => ({
     } catch (err) {
       set({
         loading: false,
-        error: 'Something went wrong',
+        error: err.name,
       });
     }
   },
@@ -182,3 +182,38 @@ let productStore = (set) => ({
 productStore = devtools(productStore);
 
 export const useProductStore = create(productStore);
+
+let GetSingleProduct = (set) => ({
+  loading: true,
+  product: {},
+  error: null,
+  fetchProduct: async (token, id) => {
+    try {
+      set({
+        loading: true,
+      });
+
+      const { data } = await axios({
+        method: 'get',
+        url: `/product/${id}`,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      set({
+        loading: false,
+        product: data.data,
+      });
+    } catch (err) {
+      set({
+        loading: false,
+        error: 'Something went wrong',
+      });
+    }
+  },
+});
+
+GetSingleProduct = devtools(GetSingleProduct);
+
+export const useGetSingleProduct = create(GetSingleProduct);

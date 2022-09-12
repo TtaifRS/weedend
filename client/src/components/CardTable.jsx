@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { AiTwotoneCheckCircle, AiTwotoneCloseCircle } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
 import { useProductStore, useTokenStore } from '../store';
 import Button from './Button';
 
@@ -112,14 +113,9 @@ const CardTable = () => {
                     ) : '-'}
                   </td>
                   <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                    {
-                      product.updated ? (
-                        <Button btnName="update" classStyles="px-2 py-1 uppercase " />
-                      )
-                        : (
-                          <Button btnName="update" classStyles="px-2 py-1 bg-green-500 uppercase text-white" />
-                        )
-                    }
+                    <Link to={`/product/${product._id}`}>
+                      <Button btnName="update" classStyles={product.updated ? 'px-2 py-1 uppercase ' : 'px-2 py-1 bg-green-500 uppercase text-white'} />
+                    </Link>
                   </td>
                 </tr>
               ))

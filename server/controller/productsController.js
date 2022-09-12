@@ -199,7 +199,7 @@ export const getProduct = catchAsyncError(async (req, res, next) => {
 //update product v2 /api/v1/product/new/:id
 export const updateProduct = catchAsyncError(async (req, res, next) => {
   const id = req.params.id
-
+  let product = await Product.findById(id)
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
 
     let removeObj = []
@@ -223,22 +223,28 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
         "update": { $unset: removeObj }
       }
     })
-    console.log(removeObj)
-    console.log(bulkArr)
-    await Product.updateOne(
-      { "_id": id },
-      [
-        {
-          $set: req.body
-        },
-        { $unset: removeObj }
-      ]
-    )
-    let product = await Product.findById(id)
+    console.log(removeObj.length)
+
+    if (removeObj.length > 0) {
+      console.log(removeObj)
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $set: req.body
+          },
+          { $unset: removeObj }
+        ]
+      )
+    } else {
+      product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    }
+
+
     res.status(200).json({
       success: true,
       message: 'Products updated',
-      data: product
+      data: removeObj
     })
   } else {
     return next(new ErrorHandler('Invalid ID'), 404)
