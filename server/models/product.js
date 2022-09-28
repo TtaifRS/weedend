@@ -44,9 +44,19 @@ const productSchema = new Schema({
     type: Boolean,
     default: false
   },
+  types: {
+    type: String,
+    enum: {
+      values: ['Defaults', 'Flowers', 'Pre-Rolls', 'Vapable', 'Concentrates', 'Beverages', 'Edibles', 'Oils', 'Topicals', 'Seeds', 'Producers'],
+      message: 'Please select correct types',
+    },
+    default: 'Defaults'
+  },
+  weedEndData: Schema.Types.Mixed,
   productData: Schema.Types.Mixed
 }, {
-  timestamps: true
+  timestamps: true,
+  strict: false
 })
 
 

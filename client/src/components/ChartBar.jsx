@@ -8,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+
 import { Bar } from 'react-chartjs-2';
 import { useStatsStore } from '../store';
 
@@ -53,7 +54,6 @@ const ChartBar = () => {
   const error = useStatsStore((state) => state.error);
   const updatePerDay = useStatsStore((state) => state.updatePerDay);
 
-  console.log(error);
   if (error) {
     return <div>{error}</div>;
   }
@@ -103,6 +103,6 @@ const ChartBar = () => {
     );
   }
 
-  return <div>loading</div>;
+  return <div className="flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-lg rounded">loading</div>;
 };
 export default ChartBar;

@@ -1,9 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import dot from 'dot-object';
+// eslint-disable-next-line no-unused-vars
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useGetSingleProduct, useTokenStore } from '../store';
+import { types } from '../data/datatable';
 import Button from './Button';
+import Loader from './Loader';
+import Select from './SelectInput';
+import { Flowers, PreRolls } from './TypeComponents';
 
 const priceDecimal = (str) => {
   const len = str.length;
@@ -20,13 +27,21 @@ const ProductForm = () => {
   const fetchProduct = useGetSingleProduct((state) => state.fetchProduct);
   const token = useTokenStore((state) => state.token);
 
+  const typeValue = types.find((type) => type.value);
+
   // react state
+  // eslint-disable-next-line no-unused-vars
+  const [currentTypeValue, setCurrentTypeValue] = useState(typeValue);
   const [addKey, setAddKey] = useState([]);
   const [addValue, setAddValue] = useState([]);
   const [inputValue, setInputValue] = useState({
     updated: false,
   });
-
+  const [extraData, setExtraData] = useState([{
+    key: '',
+    value: '',
+  }]);
+  const [extraField, setExtraField] = useState({});
   // fetcing product to show value
   useEffect(() => {
     const fetch = async () => {
@@ -34,6 +49,50 @@ const ProductForm = () => {
     };
     fetch();
   }, []);
+
+  // handle extra key input
+  const handleExtraInputChange = (index, event) => {
+    const values = [...extraData];
+    if (event.target.name === 'key') {
+      let keyValue = event.target.value;
+      keyValue = keyValue.replace(/ +/g, '');
+      values[index].key = keyValue;
+    } else {
+      values[index].value = event.target.value;
+    }
+
+    setExtraData(values);
+  };
+
+  const handleAddFields = () => {
+    const values = [...extraData];
+    values.push({ key: '', value: '' });
+    setExtraData(values);
+  };
+
+  const handleRemoveFields = (index) => {
+    const values = [...extraData];
+    values.splice(index, 1);
+    setExtraData(values);
+  };
+
+  const handleExtraField = () => {
+    const e = {};
+    extraData.forEach((item) => {
+      console.log('key', item.key.length);
+      console.log('value', item.value.length);
+      if (item.key.length > 0 && item.value.length > 0) {
+        e[item.key] = item.value;
+        setExtraField(e);
+        setInputValue({
+          updated: true,
+        });
+        toast.success('Additional data added, please click update now');
+      } else {
+        toast.error('Blank fields');
+      }
+    });
+  };
 
   // handle input form value
   const handleChange = (key, value) => {
@@ -59,47 +118,74 @@ const ProductForm = () => {
 
   if (addKey.length > 0) {
     // eslint-disable-next-line no-return-assign
-    addKey.map((key, i) => (
-      existingProductData[key] = addValue[i]
-    ));
+    addKey.map((key, i) => existingProductData[key] = addValue[i]);
   }
 
   // req.body
   let body = {};
-  if (
-    existingProductData
-  && Object.keys(existingProductData).length === 0
-  && Object.getPrototypeOf(existingProductData) === Object.prototype
-  ) {
+  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
     body = {
       ...inputValue,
+      productData: {
+        ...extraField,
+      },
     };
-    body = dot.dot(body);
-  } else {
+    console.log('case 1');
+  }
+
+  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
     body = {
       ...inputValue,
       productData: {
         ...existingProductData,
       },
     };
-    body = dot.dot(body);
+    console.log('case 2');
   }
 
-  // on update
-  const handleClick = async () => {
-    const reqData = await axios({
-      method: 'put',
-      url: `/product/${id}`,
-      data: body,
-      headers: {
-        Authorization: `Bearer ${token}`,
+  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
+    body = {
+      ...inputValue,
+      productData: {
+        ...extraField,
+        ...existingProductData,
       },
-    });
-    if (reqData.error) {
-      console.log(reqData.error);
+    };
+    console.log('case 3');
+  }
+
+  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
+    body = {
+      ...inputValue,
+    };
+    console.log('case 4');
+  }
+
+  body = dot.dot(body);
+  console.log(body);
+
+  // on update
+
+  const handleClick = async () => {
+    if (inputValue.updated) {
+      const reqData = await axios({
+        method: 'put',
+        url: `/product/${id}`,
+        data: body,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (reqData.error) {
+        console.log(reqData.error);
+        toast.error('Something went wrong');
+      }
+
+      navigate(0);
+      toast.success('Update Successfull');
+    } else {
+      toast.error('Nothing to update');
     }
-    console.log('button clicked');
-    navigate(0);
   };
   if (!loading && product._id === id) {
     const price = priceDecimal(product.price.toString());
@@ -165,7 +251,9 @@ const ProductForm = () => {
         keyName: 'description',
         key: 10,
       },
+
     ];
+    console.log(product.weedEndData);
     return (
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-green-100 border-0">
         <div className="rounded-t bg-white mb-0 p-6">
@@ -199,7 +287,9 @@ const ProductForm = () => {
               ) : null}
             </div>
             <Button handleClick={handleClick} btnName="update" classStyles="text-black active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" />
+
           </div>
+          <ToastContainer />
         </div>
         <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
           <form>
@@ -224,6 +314,104 @@ const ProductForm = () => {
                   </div>
                 ))
                }
+
+            </div>
+            <hr className="mt-6 border-b-1 border-green-300" />
+            <p className="text-sm mt-3 mb-6 font-bold uppercase">
+              Weedend Information
+            </p>
+            <div className="flex flex-col flex-wrap">
+              <div className="w-full lg:w-6/12 px-4">
+                <div className="relative flex justify-between items-center w-full mb-3">
+                  <div className="block uppercase text-black-600 text-xs font-bold mb-2">
+                    Types
+                  </div>
+                  <div className="block uppercase text-green-600 text-xs font-bold mb-2">
+                    {product.types}
+                  </div>
+                  <div className="block w-1/2 uppercase text-green-600 text-xs font-bold mb-2">
+                    <Select
+          // className="flex-1"
+                      options={types}
+                      selectedOption={currentTypeValue}
+                      handelChange={(event) => {
+                        setCurrentTypeValue(event);
+
+                        setInputValue({
+                          ...inputValue,
+                          updated: true,
+                          types: event.value,
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* {(product.types && product.types !== 'Defaults') ? (
+                <div className="flex flex-wrap">
+                  {
+                     Object.keys(product.weedEndData)
+                       .map((key, i) => (
+                         <div className="w-full lg:w-6/12 px-4" key={i}>
+                           <div className="relative w-full mb-3">
+                             <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
+                               {key}
+                             </label>
+                             <input
+                               type="text"
+                               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                               onChange={(e) => console.log(e.target.value)}
+                             />
+                           </div>
+                         </div>
+                       ))
+                   }
+                </div>
+              ) : undefined} */}
+              {/*
+              {
+                (product.types !== 'Producers' && product.types !== 'Defaults')
+                  ? (
+                    <div className="flex flex-wrap">
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
+                            SKU
+                          </label>
+                          <input
+                            type="text"
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'}
+                            onChange={(e) => console.log(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="w-full lg:w-6/12 px-4">
+                        <div className="relative w-full mb-3">
+                          <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
+                            SKU
+                          </label>
+                          <input
+                            type="text"
+                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                            defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'}
+                            onChange={(e) => console.log(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )
+                  : undefined
+              } */}
+              {
+                (product.types === 'Flowers')
+                  ? <Flowers /> : undefined
+              }
+              {
+                (product.types === 'Pre-Rolls')
+                  ? <PreRolls /> : undefined
+              }
 
             </div>
             {product.productData ? (
@@ -257,13 +445,71 @@ const ProductForm = () => {
                 </div>
               </>
             ) : null}
+            <hr className="mt-6 border-b-1 border-green-300" />
+            <p className="text-sm mt-3 mb-6 font-bold uppercase">
+              Add Extra Data
+            </p>
+            <div className="flex flex-wrap">
+              {extraData.map((inputField, index) => (
+                <div className="w-full flex justify-between  px-4" key={`${inputField}~${index}`}>
+                  <div className="relative w-full pr-5 mb-3">
+                    <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
+                      Key
+                    </label>
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      id="key"
+                      name="key"
+                      defaultValue={inputField.key}
+                      onChange={(e) => handleExtraInputChange(index, e)}
+                    />
+                  </div>
+                  <div className="relative w-full px-5 mb-3">
+                    <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
+                      Value
+                    </label>
+                    <input
+                      type="text"
+                      className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                      id="value"
+                      name="value"
+                      defaultValue={inputField.value}
+                      onChange={(e) => handleExtraInputChange(index, e)}
+                    />
+                  </div>
+                  <div className="relative w-full pl-5 mb-3">
+                    <button
+                      className="border-2 hover:bg-red-500 hover:text-white border-red-500 px-3 m-1 py-1"
+                      type="button"
+                      disabled={index === 0}
+                      onClick={() => handleRemoveFields(index)}
+                    >
+                      -
+                    </button>
+                    <button
+                      className="border-2 hover:bg-green-500 hover:text-white border-green-500 px-3 m-1 py-1"
+                      type="button"
+                      onClick={() => handleAddFields()}
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              ))}
+              <button type="button" className="text-black active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" onClick={handleExtraField}>
+                Submit
+              </button>
+
+            </div>
+
           </form>
         </div>
 
       </div>
     );
   }
-  return <div>loading</div>;
+  return <div><Loader /></div>;
 };
 
 export default ProductForm;

@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { MdUpdate } from 'react-icons/md';
 import { BsBoxSeam, BsFillCalendar2WeekFill, BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
 import CardStats from './CardStats';
+import Loader from './Loader';
 import { useStatsStore, useTokenStore } from '../store';
 
 const Header = () => {
@@ -92,7 +93,7 @@ const Header = () => {
     );
   }
   return (
-    <div>Loadin</div>
+    <div><Loader /></div>
   );
 };
 

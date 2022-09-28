@@ -189,10 +189,6 @@ let GetSingleProduct = (set) => ({
   error: null,
   fetchProduct: async (token, id) => {
     try {
-      set({
-        loading: true,
-      });
-
       const { data } = await axios({
         method: 'get',
         url: `/product/${id}`,

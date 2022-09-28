@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { Navbar, Header, Dashboard } from '../components';
+import { Navbar, Header, Dashboard, Loader } from '../components';
 import Sidebar from '../components/Sidebar';
 import { useTokenStore, useUserStore } from '../store';
 
@@ -21,11 +21,10 @@ const HomePage = () => {
 
   if (loading) {
     return (
-      <div>Loading</div>
+      <div><Loader /></div>
     );
   }
 
-  console.log('token', token);
   if (userError) {
     return (
       <Navigate to="/login" />

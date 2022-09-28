@@ -77,7 +77,7 @@ const Sidebar = () => {
               </NavLink>
             </li>
             <li className="items-center">
-              <NavLink end className={({ isActive }) => (isActive ? `${activeLink} text-xs flex uppercase py-3 font-bold items-center` : `${inActiveLink} text-xs flex uppercase py-3 font-bold items-center`)} to="users">
+              <NavLink end className={({ isActive }) => (isActive ? `${activeLink} text-xs flex uppercase py-3 font-bold items-center` : `${inActiveLink} text-xs flex uppercase py-3 font-bold items-center`)} to="/">
                 <RiUser2Fill className="text-sm mr-2" />
                 Users
               </NavLink>

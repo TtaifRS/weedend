@@ -85,10 +85,12 @@ export const getNewProduct = catchAsyncError(
             cannabisVolume,
             thc,
             cbd,
+            types: productExist.types,
+            weedEndData: productExist.weedEndData,
             productData: productExist.productData,
             createdAt: productExist.createdAt,
-            updatedAt: productExist.updated ? productExist.updatedAt : "null",
-            updated: productExist.updated,
+            updatedAt: productExist.productData ? productExist.updatedAt : "null",
+            updated: productExist.productData ? true : false,
 
           },
           {
@@ -197,10 +199,507 @@ export const getProduct = catchAsyncError(async (req, res, next) => {
 // })
 
 //update product v2 /api/v1/product/new/:id
+// export const updateProduct = catchAsyncError(async (req, res, next) => {
+//   const id = req.params.id
+//   let product = await Product.findById(id)
+//   if (id.match(/^[0-9a-fA-F]{24}$/)) {
+
+//     let removeObj = []
+
+//     Object.entries(req.body).forEach(([key, val]) => {
+//       if (!val) { delete req.body[key]; removeObj.push(key) }
+//     })
+
+//     let bulkArr = []
+
+//     if (req.body) bulkArr.push({
+//       updateOne: {
+//         "filter": { id },
+//         "update": { $set: req.body }
+//       }
+//     })
+
+//     if (Object.entries(removeObj).length > 0 && removeObj.constructor === Object) bulkArr.push({
+//       updateOne: {
+//         "filter": { id },
+//         "update": { $unset: removeObj }
+//       }
+//     })
+
+//     if (removeObj.length > 0) {
+//       product = await Product.updateOne(
+//         { "_id": id },
+//         [
+//           {
+//             $set: req.body
+//           },
+//           { $unset: removeObj }
+//         ]
+//       )
+//     } else {
+//       product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
+//     }
+
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Products updated',
+//       data: product
+//     })
+//   } else {
+//     return next(new ErrorHandler('Invalid ID'), 404)
+//   }
+// })
+
+
 export const updateProduct = catchAsyncError(async (req, res, next) => {
   const id = req.params.id
   let product = await Product.findById(id)
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
+
+    /**
+     * @Flowers
+     * 
+     */
+    if (req.body.types && req.body.types === 'Flowers') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thc: undefined,
+                cbd: undefined,
+                format: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quailty: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                micro: undefined,
+                handTrimmed: undefined,
+                hangDried: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined,
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+     * @PreRolls
+     * 
+     */
+    if (req.body.types && req.body.types === 'Pre-Rolls') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thc: undefined,
+                cbd: undefined,
+                format: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quailty: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                micro: undefined,
+                handTrimmed: undefined,
+                hangDried: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined,
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+     * @Vapable
+     * 
+     */
+
+    if (req.body.types && req.body.types === 'Vapable') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thc: undefined,
+                cbd: undefined,
+                format: undefined,
+                type: undefined,
+                kit: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quality: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+    * @Concentrates
+    * 
+    */
+
+    if (req.body.types && req.body.types === 'Concentrates') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thc: undefined,
+                cbd: undefined,
+                format: undefined,
+                type: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quality: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                micro: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+
+    /**
+    * @Beverages
+    * 
+    */
+
+    if (req.body.types && req.body.types === 'Beverages') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                cbdMgTotal: undefined,
+                thcMgTotal: undefined,
+                format: undefined,
+                type: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quality: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+     * @Edibles
+     * 
+     */
+
+    if (req.body.types && req.body.types === 'Edibles') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thcMgTotal: undefined,
+                cbdMgTotal: undefined,
+                format: undefined,
+                type: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quality: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                vegan: undefined,
+                glutenFree: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+     * @Oils
+     * 
+     */
+
+    if (req.body.types && req.body.types === 'Oils') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thcMg: undefined,
+                cbdMg: undefined,
+                format: undefined,
+                type: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quality: undefined,
+                genetics: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                mircro: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+     * @Topicals
+     * 
+     */
+
+    if (req.body.types && req.body.types === 'Topicals') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                thcMg: undefined,
+                cbdMg: undefined,
+                format: undefined,
+                size: undefined,
+                category: undefined,
+                phenotype: undefined,
+                quality: undefined,
+                organic: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+    * @Seeds
+    * 
+    */
+
+    if (req.body.types && req.body.types === 'Seeds') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                sku: undefined,
+                parentSku: undefined,
+                brand: undefined,
+                productName: undefined,
+                variants: false,
+                format: undefined,
+                category: undefined,
+                quality: undefined,
+                genetics: undefined,
+                phenotype: undefined,
+                terpene1: undefined,
+                terpene2: undefined,
+                terpene3: undefined,
+                organic: undefined,
+                effect: undefined,
+                province: undefined,
+                additionalInfo: undefined,
+                salePrice: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+    * @Producers
+    * 
+    */
+
+    if (req.body.types && req.body.types === 'Producers') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+          {
+            $set: {
+              weedEndData: {
+                producerID: undefined,
+                producerName: undefined,
+                organic: undefined,
+                micro: undefined,
+                handTrimmed: undefined,
+                hangDry: undefined,
+                province: undefined,
+                flower: undefined,
+                preRoll: undefined,
+                edibles: undefined,
+                beverages: undefined,
+                softGels: undefined,
+                oils: undefined,
+                looseConcentrates: undefined,
+                catridges: undefined,
+                topicals: undefined,
+                additionalInfo: undefined
+              }
+            }
+          }
+        ]
+      )
+    }
+
+    /**
+     * @Defaults
+     * 
+     */
+    if (req.body.types && req.body.types === 'Defaults') {
+      product = await Product.updateOne(
+        { "_id": id },
+        [
+          {
+            $unset: ['weedEndData']
+          },
+
+        ]
+      )
+
+      console.log(product.weedEndData)
+    }
 
     let removeObj = []
 
@@ -223,10 +722,8 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
         "update": { $unset: removeObj }
       }
     })
-    console.log(removeObj.length)
 
     if (removeObj.length > 0) {
-      console.log(removeObj)
       product = await Product.updateOne(
         { "_id": id },
         [
@@ -240,11 +737,11 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
       product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
     }
 
-
+    product = await Product.findById(id)
     res.status(200).json({
       success: true,
       message: 'Products updated',
-      data: removeObj
+      data: product
     })
   } else {
     return next(new ErrorHandler('Invalid ID'), 404)
