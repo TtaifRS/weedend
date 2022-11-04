@@ -1,98 +1,18 @@
-/* eslint-disable array-callback-return */
 import React, { useState } from 'react';
-import { useGetSingleProduct, useGetWeedEndData, useFieldStore } from '../../store';
+import { useGetSingleProduct, useGetWeedEndData } from '../../store';
 import { Input, SelectInput } from './InputComponent';
+import { formatVapableConcentrates, typesVapableConcentrates, categories, phenoTypes, qualities, tarpenes, effects, provinces } from '../../data/datatable';
 
-import Loader from '../Loader';
-
-const Flowers = () => {
-  const fields = useFieldStore((state) => state.fields);
-  const loading = useFieldStore((state) => state.loading);
+const Vapables = () => {
   const product = useGetSingleProduct((state) => state.product);
-
-  const defaultValue = [
-    {
-      id: -1,
-      label: 'undefined',
-      value: 'undefined',
-    },
-  ];
-
-  let flowerFormat = [
-    ...defaultValue,
-  ];
-
-  let phenotypes = [
-    ...defaultValue,
-  ];
-
-  let terpenes = [
-    ...defaultValue,
-  ];
-
-  let categories = [
-    ...defaultValue,
-  ];
-
-  let yesNo = [
-    ...defaultValue,
-  ];
-
-  let qualities = [
-    ...defaultValue,
-  ];
-
-  let provinces = [
-    ...defaultValue,
-  ];
-
-  let effects = [
-    ...defaultValue,
-  ];
-
-  fields.map((field) => {
-    if (field.name === 'flowerFormat') {
-      flowerFormat = [...flowerFormat, ...field.tables];
-    }
-
-    if (field.name === 'phenotypes') {
-      phenotypes = [...phenotypes, ...field.tables];
-    }
-    if (field.name === 'terpenes') {
-      terpenes = [...terpenes, ...field.tables];
-    }
-
-    if (field.name === 'categories') {
-      categories = [...categories, ...field.tables];
-    }
-
-    if (field.name === 'yesNo') {
-      yesNo = [...yesNo, ...field.tables];
-    }
-
-    if (field.name === 'qualities') {
-      qualities = [...qualities, ...field.tables];
-    }
-
-    if (field.name === 'provinces') {
-      provinces = [...provinces, ...field.tables];
-    }
-
-    if (field.name === 'effects') {
-      effects = [...effects, ...field.tables];
-    }
-  });
-
-  const flowerCategories = categories.filter((category) => (category.label === 'undefined' || category.label === 'THC Flower' || category.label === 'CBD Flower'));
-
-  const formatValue = flowerFormat.find((format) => format.value);
-  const phenoTypesValue = phenotypes.find((phenotype) => phenotype.value);
-  const tarpeneValue = terpenes.find((tarpene) => tarpene.value);
-  const yesNoFormateValue = yesNo.find((yesNoFormate) => yesNoFormate.value);
-  const categoryValue = flowerCategories.find((category) => category.value);
+  const formatValue = formatVapableConcentrates.find((format) => format.value);
+  const categoryValue = categories.find((category) => category.value);
+  const phenoTypesValue = phenoTypes.find((phenoType) => phenoType.value);
   const qualityValue = qualities.find((quality) => quality.value);
+  const tarpeneValue = tarpenes.find((tarpene) => tarpene.value);
   const effectValue = effects.find((effect) => effect.value);
   const provinceValue = provinces.find((province) => province.value);
+  const typeValues = typesVapableConcentrates.find((type) => type.value);
 
   const addData = useGetWeedEndData((state) => state.addData);
 
@@ -105,17 +25,7 @@ const Flowers = () => {
   const [currentTarpenes3, setCurrentTarpenes3] = useState(tarpeneValue);
   const [currentEffect, setCurrentEffect] = useState(effectValue);
   const [currentProvince, setCurrentProvince] = useState(provinceValue);
-  const [currentOrganic, setCurrentOrganic] = useState(yesNoFormateValue);
-  const [currentMicro, setCurrentMicro] = useState(yesNoFormateValue);
-  const [currentHandTrimmed, setCurrentHandTrimmed] = useState(yesNoFormateValue);
-  const [currentHandDried, setCurrentHandDried] = useState(yesNoFormateValue);
-
-  if (loading) {
-    return (
-      <Loader />
-    );
-  }
-
+  const [currentType, setCurrentType] = useState(typeValues);
   return (
     <div className="flex flex-wrap items-center">
       <Input label="SKU" defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'} handleChange={(event) => addData('sku', event)} />
@@ -124,12 +34,10 @@ const Flowers = () => {
       <Input label="Product Name" defaultValue={product.weedEndData.productName ? product.weedEndData.productName : 'undefined'} handleChange={(event) => addData('productName', event)} />
       <Input label="THC %" defaultValue={product.weedEndData.thc ? product.weedEndData.thc : 'undefined'} handleChange={(event) => addData('thc', event)} />
       <Input label="CBD %" defaultValue={product.weedEndData.cbd ? product.weedEndData.cbd : 'undefined'} handleChange={(event) => addData('cbd', event)} />
-      <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'undefined'} handleChange={(event) => addData('genetics', event)} />
-
       <SelectInput
         label="Format"
         value={product.weedEndData.format ? product.weedEndData.format : 'undefined'}
-        options={flowerFormat}
+        options={formatVapableConcentrates}
         selectedOption={currentFormat}
         handleChange={(event) => {
           addData('format', event.value);
@@ -137,9 +45,19 @@ const Flowers = () => {
         }}
       />
       <SelectInput
+        label="Type"
+        value={product.weedEndData.type ? product.weedEndData.type : 'undefined'}
+        options={typesVapableConcentrates}
+        selectedOption={currentType}
+        handleChange={(event) => {
+          addData('type', event.value);
+          setCurrentType(event);
+        }}
+      />
+      <SelectInput
         label="Category"
         value={product.weedEndData.category ? product.weedEndData.category : 'undefined'}
-        options={flowerCategories}
+        options={categories}
         selectedOption={currentCategory}
         handleChange={(event) => {
           addData('category', event.value);
@@ -149,7 +67,7 @@ const Flowers = () => {
       <SelectInput
         label="Phenotype"
         value={product.weedEndData.phenotype ? product.weedEndData.phenotype : 'undefined'}
-        options={phenotypes}
+        options={phenoTypes}
         selectedOption={currentPhenoTypes}
         handleChange={(event) => {
           addData('phenotype', event.value);
@@ -169,7 +87,7 @@ const Flowers = () => {
       <SelectInput
         label="Terpene 1"
         value={product.weedEndData.terpene1 ? product.weedEndData.terpene1 : 'undefined'}
-        options={terpenes}
+        options={tarpenes}
         selectedOption={currentTarpenes1}
         handleChange={(event) => {
           addData('terpene1', event.value);
@@ -179,7 +97,7 @@ const Flowers = () => {
       <SelectInput
         label="Terpene 2"
         value={product.weedEndData.terpene2 ? product.weedEndData.terpene2 : 'undefined'}
-        options={terpenes}
+        options={tarpenes}
         selectedOption={currentTarpenes2}
         handleChange={(event) => {
           addData('terpene2', event.value);
@@ -189,53 +107,18 @@ const Flowers = () => {
       <SelectInput
         label="Terpene 3"
         value={product.weedEndData.terpene3 ? product.weedEndData.terpene3 : 'undefined'}
-        options={terpenes}
+        options={tarpenes}
         selectedOption={currentTarpenes3}
         handleChange={(event) => {
           addData('terpene3', event.value);
           setCurrentTarpenes3(event);
         }}
       />
-      <SelectInput
-        label="Organic"
-        value={product.weedEndData.organic ? product.weedEndData.organic : 'undefined'}
-        options={yesNo}
-        selectedOption={currentOrganic}
-        handleChange={(event) => {
-          addData('organic', event.value);
-          setCurrentOrganic(event);
-        }}
-      />
-      <SelectInput
-        label="Micro"
-        value={product.weedEndData.micro ? product.weedEndData.micro : 'undefined'}
-        options={yesNo}
-        selectedOption={currentMicro}
-        handleChange={(event) => {
-          addData('micro', event.value);
-          setCurrentMicro(event);
-        }}
-      />
-      <SelectInput
-        label="Hand-Trimmed"
-        value={product.weedEndData.handTrimmed ? product.weedEndData.handTrimmed : 'undefined'}
-        options={yesNo}
-        selectedOption={currentHandTrimmed}
-        handleChange={(event) => {
-          addData('handTrimmed', event.value);
-          setCurrentHandTrimmed(event);
-        }}
-      />
-      <SelectInput
-        label="Hand-Dried"
-        value={product.weedEndData.hangDried ? product.weedEndData.hangDried : 'undefined'}
-        options={yesNo}
-        selectedOption={currentHandDried}
-        handleChange={(event) => {
-          addData('hangDried', event.value);
-          setCurrentHandDried(event);
-        }}
-      />
+      <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'undefined'} handleChange={(event) => addData('genetics', event)} />
+      <Input label="Organic" defaultValue={product.weedEndData.organic ? product.weedEndData.organic : 'undefined'} handleChange={(event) => addData('organic', event)} />
+      <Input label="Micro" defaultValue={product.weedEndData.micro ? product.weedEndData.micro : 'undefined'} handleChange={(event) => addData('micro', event)} />
+      <Input label="Hand-Trimmed" defaultValue={product.weedEndData.handTrimmed ? product.weedEndData.handTrimmed : 'undefined'} handleChange={(event) => addData('shandTrimmedku', event)} />
+      <Input label="Hang-Dried" defaultValue={product.weedEndData.hangDried ? product.weedEndData.hangDried : 'undefined'} handleChange={(event) => addData('hangDried', event)} />
       <SelectInput
         label="Effect"
         value={product.weedEndData.effect ? product.weedEndData.effect : 'undefined'}
@@ -262,4 +145,4 @@ const Flowers = () => {
   );
 };
 
-export default Flowers;
+export default Vapables;

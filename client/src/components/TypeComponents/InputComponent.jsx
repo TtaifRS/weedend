@@ -11,7 +11,7 @@ const Input = ({ label, defaultValue, handleChange }) => (
         type="text"
         className="border-0 px-2 py-2 placeholder-gray-700 text-gray-700 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
         defaultValue={defaultValue}
-        onChange={handleChange}
+        onChange={(event) => handleChange(event.target.value)}
       />
     </div>
   </div>

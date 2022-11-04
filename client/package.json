@@ -2,7 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000/api/v1",
+  "proxy": "http://localhost:9000/api/v1",
   "dependencies": {
     "@headlessui/react": "^1.7.2",
     "@heroicons/react": "^1.0.6",
@@ -23,6 +23,7 @@
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-spinners": "^0.13.4",
+    "react-tag-input-component": "^2.0.2",
     "react-toastify": "^9.0.8",
     "web-vitals": "^2.1.4",
     "zustand": "^4.0.0"

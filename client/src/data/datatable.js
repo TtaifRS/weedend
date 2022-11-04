@@ -45,40 +45,51 @@ export const types = [
     value: 'Topicals',
   },
   {
-    id: 10,
+    id: 12,
     label: 'Seeds',
     value: 'Seeds',
   },
   {
-    id: 11,
+    id: 14,
     label: 'Producers',
     value: 'Producers',
   },
 ];
 
-export const qualities = [{
-  id: 1,
-  label: 1,
-  value: 1,
-}, {
-  id: 2,
-  label: 2,
-  value: 2,
-}, {
-  id: 3,
-  label: 3,
-  value: 3,
-}, {
-  id: 4,
-  label: 4,
-  value: 4,
-}, {
-  id: 5,
-  label: 5,
-  value: 5,
-}];
+export const qualities = [
+  {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
+    id: 1,
+    label: 1,
+    value: 1,
+  }, {
+    id: 2,
+    label: 2,
+    value: 2,
+  }, {
+    id: 3,
+    label: 3,
+    value: 3,
+  }, {
+    id: 4,
+    label: 4,
+    value: 4,
+  }, {
+    id: 5,
+    label: 5,
+    value: 5,
+  }];
 
 export const tarpenes = [
+  {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
   {
     id: 1,
     label: 'Myrcene',
@@ -130,6 +141,11 @@ export const tarpenes = [
 
 export const effects = [
   {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
     id: 1,
     label: 'Excite',
     value: 'Excite',
@@ -159,6 +175,11 @@ export const effects = [
 
 export const formatFlower = [
   {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
     id: 1,
     label: 'Parent',
     value: 'Parent',
@@ -185,43 +206,99 @@ export const formatFlower = [
     value: '14g',
   },
   {
-    id: 6,
+    id: 7,
     label: '15g',
     value: '15g',
   },
   {
-    id: 6,
+    id: 8,
     label: '28g',
     value: '28g',
   },
   {
-    id: 6,
+    id: 9,
     label: '29g',
     value: '29g',
   },
   {
-    id: 6,
+    id: 10,
     label: '30g',
     value: '30g',
   },
 ];
 
 export const formataPreroll = [
-  'Parent',
-  '3 x 0.3g',
-  '1 x 0.5g',
-  '2 x 0.5g',
-  '3 x 0.5g',
-  '4 x 0.5g',
-  '5 x 0.5g',
-  '7 x 0.5g',
-  '8 x 0.5g',
-  '10 x 0.5g',
-  '1 x 0.7g',
-  '3 x 0.75g',
-  '1 x 1g',
-  '1 x 1g',
-  '2 x 1g',
+  {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
+    id: 1,
+    label: 'Parent',
+    value: 'Parent',
+  }, {
+    id: 2,
+    label: '3 x 0.3g',
+    value: '3 x 0.3g',
+  }, {
+    id: 3,
+    label: '1 x 0.5g',
+    value: '1 x 0.5g',
+  }, {
+    id: 4,
+    label: '2 x 0.5g',
+    value: '2 x 0.5g',
+  }, {
+    id: 5,
+    label: '3 x 0.5g',
+    value: '3 x 0.5g',
+  },
+  {
+    id: 6,
+    label: '4 x 0.5g',
+    value: '4 x 0.5g',
+  },
+  {
+    id: 7,
+    label: '5 x 0.5g',
+    value: '5 x 0.5g',
+  },
+  {
+    id: 8,
+    label: '7 x 0.5g',
+    value: '7 x 0.5g',
+  },
+  {
+    id: 9,
+    label: '8 x 0.5g',
+    value: '8 x 0.5g',
+  },
+  {
+    id: 10,
+    label: '10 x 0.5g',
+    value: '10 x 0.5g',
+  },
+  {
+    id: 11,
+    label: '1 x 0.7g',
+    value: '1 x 0.7g',
+  },
+  {
+    id: 12,
+    label: '3 x 0.75g',
+    value: '3 x 0.75g',
+  },
+  {
+    id: 13,
+    label: '1 x 1g',
+    value: '1 x 1g',
+  },
+  {
+    id: 14,
+    label: '2 x 1g',
+    value: '2 x 1g',
+  },
 ];
 
 export const formatConcentrates = [
@@ -248,22 +325,73 @@ export const typesConcentrates = [
 ];
 
 export const formatVapableConcentrates = [
-  'Parent',
-  '0.15g',
-  '0.25g',
-  '0.3g',
-  '0.35g',
-  '0.42g',
-  '0.5g',
-  '1g',
-  '50 Doses',
-  '200 Doses',
+  {
+    id: 1,
+    label: 'Parent',
+    value: 'Parent',
+  }, {
+    id: 2,
+    label: '0.15g',
+    value: '0.15g',
+  }, {
+    id: 3,
+    label: '0.25g',
+    value: '0.25g',
+  }, {
+    id: 4,
+    label: '0.3g',
+    value: '0.3g',
+  }, {
+    id: 5,
+    label: '0.35g',
+    value: '0.35g',
+  },
+  {
+    id: 6,
+    label: '0.42g',
+    value: '0.42g',
+  },
+  {
+    id: 7,
+    label: '0.5g',
+    value: '0.5g',
+  },
+  {
+    id: 8,
+    label: '1g',
+    value: '1g',
+  },
+  {
+    id: 9,
+    label: '50 Doses',
+    value: '50 Doses',
+  },
+  {
+    id: 10,
+    label: '200 Doses',
+    value: '200 Doses',
+  },
 ];
 
 export const typesVapableConcentrates = [
-  '510 Thread',
-  'PAX Pod',
-  'Disposable',
+  {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
+    id: 1,
+    label: '510 Thread',
+    value: '510 Thread',
+  }, {
+    id: 2,
+    label: 'PAX Pod',
+    value: 'PAX Pod',
+  }, {
+    id: 3,
+    label: 'Disposable',
+    value: 'Disposable',
+  },
 ];
 
 export const formataEdibles = [
@@ -300,6 +428,11 @@ export const formatOil = [
 ];
 
 export const provinces = [
+  {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
   {
     id: 1,
     label: 'Alberta',
@@ -360,6 +493,11 @@ export const provinces = [
 
 export const categories = [
   {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
     id: 1,
     label: 'THC Flower',
     value: 'THC Flower',
@@ -414,6 +552,11 @@ export const categories = [
 
 export const phenoTypes = [
   {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
     id: 1,
     label: 'Sativa',
     value: 'Sativa',
@@ -427,5 +570,23 @@ export const phenoTypes = [
     id: 3,
     label: 'Hybrid',
     value: 'Hybrid',
+  },
+];
+
+export const yesNo = [
+  {
+    id: 0,
+    label: 'undefined',
+    value: 'undefined',
+  },
+  {
+    id: 1,
+    label: 'yes',
+    value: 'yes',
+  },
+  {
+    id: 2,
+    label: 'no',
+    value: 'no',
   },
 ];

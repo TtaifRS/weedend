@@ -213,3 +213,52 @@ let GetSingleProduct = (set) => ({
 GetSingleProduct = devtools(GetSingleProduct);
 
 export const useGetSingleProduct = create(GetSingleProduct);
+
+let GetWeedEndData = (set) => ({
+  weedEndData: {},
+  addData: (key, val) => {
+    // eslint-disable-next-line prefer-const
+    let a = {};
+    a[key] = val;
+    a = { ...a };
+
+    set((state) => ({
+      weedEndData: {
+        ...state.weedEndData,
+        ...a,
+      },
+    }));
+  },
+});
+
+GetWeedEndData = devtools(GetWeedEndData);
+
+export const useGetWeedEndData = create(GetWeedEndData);
+
+let fieldStore = (set) => ({
+  loading: true,
+  fields: [],
+  error: null,
+  fetchFields: async () => {
+    try {
+      const { data } = await axios({
+        method: 'get',
+        url: '/fields',
+      });
+
+      set({
+        loading: false,
+        fields: data.data,
+      });
+    } catch (err) {
+      set({
+        loading: false,
+        error: 'Something went wrong',
+      });
+    }
+  },
+});
+
+fieldStore = devtools(fieldStore);
+
+export const useFieldStore = create(fieldStore);

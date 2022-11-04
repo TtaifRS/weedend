@@ -14,6 +14,7 @@ import products from './routes/products.js'
 import auth from './routes/auth.js'
 import users from './routes/users.js'
 import subscription from './routes/sub.js'
+import field from './routes/field.js'
 
 //other imports 
 import connectDatabase from './config/database.js'
@@ -49,6 +50,7 @@ app.use('/api/v1', products)
 app.use('/api/v1', auth)
 app.use('/api/v1', users)
 app.use('/api/v1', subscription)
+app.use('/api/v1', field)
 
 //development 
 app.get('/stripe/success', (req, res) => {

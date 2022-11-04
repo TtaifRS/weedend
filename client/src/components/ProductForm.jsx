@@ -5,12 +5,12 @@ import dot from 'dot-object';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetSingleProduct, useTokenStore } from '../store';
+import { useGetSingleProduct, useTokenStore, useGetWeedEndData, useFieldStore } from '../store';
 import { types } from '../data/datatable';
 import Button from './Button';
 import Loader from './Loader';
 import Select from './SelectInput';
-import { Flowers, PreRolls } from './TypeComponents';
+import { Flowers, PreRolls, Vapables } from './TypeComponents';
 
 const priceDecimal = (str) => {
   const len = str.length;
@@ -26,6 +26,8 @@ const ProductForm = () => {
   const loading = useGetSingleProduct((state) => state.loading);
   const fetchProduct = useGetSingleProduct((state) => state.fetchProduct);
   const token = useTokenStore((state) => state.token);
+  const weedEndData = useGetWeedEndData((state) => state.weedEndData);
+  const fetchFields = useFieldStore((state) => state.fetchFields);
 
   const typeValue = types.find((type) => type.value);
 
@@ -35,7 +37,7 @@ const ProductForm = () => {
   const [addKey, setAddKey] = useState([]);
   const [addValue, setAddValue] = useState([]);
   const [inputValue, setInputValue] = useState({
-    updated: false,
+    updated: true,
   });
   const [extraData, setExtraData] = useState([{
     key: '',
@@ -46,6 +48,7 @@ const ProductForm = () => {
   useEffect(() => {
     const fetch = async () => {
       await fetchProduct(token, id);
+      await fetchFields();
     };
     fetch();
   }, []);
@@ -79,8 +82,6 @@ const ProductForm = () => {
   const handleExtraField = () => {
     const e = {};
     extraData.forEach((item) => {
-      console.log('key', item.key.length);
-      console.log('value', item.value.length);
       if (item.key.length > 0 && item.value.length > 0) {
         e[item.key] = item.value;
         setExtraField(e);
@@ -123,7 +124,8 @@ const ProductForm = () => {
 
   // req.body
   let body = {};
-  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
+
+  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
     body = {
       ...inputValue,
       productData: {
@@ -133,7 +135,7 @@ const ProductForm = () => {
     console.log('case 1');
   }
 
-  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
+  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
     body = {
       ...inputValue,
       productData: {
@@ -143,7 +145,17 @@ const ProductForm = () => {
     console.log('case 2');
   }
 
-  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
+  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
+    body = {
+      ...inputValue,
+      weedEndData: {
+        ...weedEndData,
+      },
+    };
+    console.log('case 3');
+  }
+
+  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
     body = {
       ...inputValue,
       productData: {
@@ -151,14 +163,54 @@ const ProductForm = () => {
         ...existingProductData,
       },
     };
-    console.log('case 3');
+    console.log('case 4');
   }
 
-  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype) {
+  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
+    body = {
+      ...inputValue,
+      weedEndData: {
+        ...weedEndData,
+      },
+      productData: {
+        ...extraField,
+      },
+    };
+    console.log('case 5');
+  }
+
+  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
+    body = {
+      ...inputValue,
+      weedEndData: {
+        ...weedEndData,
+      },
+      productData: {
+        ...existingProductData,
+      },
+    };
+    console.log('case 6');
+  }
+
+  if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
+    body = {
+      ...inputValue,
+      weedEndData: {
+        ...weedEndData,
+      },
+      productData: {
+        ...extraField,
+        ...existingProductData,
+      },
+    };
+    console.log('case 7');
+  }
+
+  if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
     body = {
       ...inputValue,
     };
-    console.log('case 4');
+    console.log('case 8');
   }
 
   body = dot.dot(body);
@@ -167,7 +219,7 @@ const ProductForm = () => {
   // on update
 
   const handleClick = async () => {
-    if (inputValue.updated) {
+    if (Object.keys(body).length > 1) {
       const reqData = await axios({
         method: 'put',
         url: `/product/${id}`,
@@ -253,7 +305,7 @@ const ProductForm = () => {
       },
 
     ];
-    console.log(product.weedEndData);
+
     return (
       <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-green-100 border-0">
         <div className="rounded-t bg-white mb-0 p-6">
@@ -348,62 +400,6 @@ const ProductForm = () => {
                 </div>
               </div>
 
-              {/* {(product.types && product.types !== 'Defaults') ? (
-                <div className="flex flex-wrap">
-                  {
-                     Object.keys(product.weedEndData)
-                       .map((key, i) => (
-                         <div className="w-full lg:w-6/12 px-4" key={i}>
-                           <div className="relative w-full mb-3">
-                             <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
-                               {key}
-                             </label>
-                             <input
-                               type="text"
-                               className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                               onChange={(e) => console.log(e.target.value)}
-                             />
-                           </div>
-                         </div>
-                       ))
-                   }
-                </div>
-              ) : undefined} */}
-              {/*
-              {
-                (product.types !== 'Producers' && product.types !== 'Defaults')
-                  ? (
-                    <div className="flex flex-wrap">
-                      <div className="w-full lg:w-6/12 px-4">
-                        <div className="relative w-full mb-3">
-                          <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
-                            SKU
-                          </label>
-                          <input
-                            type="text"
-                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'}
-                            onChange={(e) => console.log(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                      <div className="w-full lg:w-6/12 px-4">
-                        <div className="relative w-full mb-3">
-                          <label htmlFor="grid-password" className="block uppercase text-green-600 text-xs font-bold mb-2">
-                            SKU
-                          </label>
-                          <input
-                            type="text"
-                            className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                            defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'}
-                            onChange={(e) => console.log(e.target.value)}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )
-                  : undefined
-              } */}
               {
                 (product.types === 'Flowers')
                   ? <Flowers /> : undefined
@@ -412,7 +408,10 @@ const ProductForm = () => {
                 (product.types === 'Pre-Rolls')
                   ? <PreRolls /> : undefined
               }
-
+              {
+                (product.types === 'Vapable')
+                  ? <Vapables /> : undefined
+              }
             </div>
             {product.productData ? (
               <>
