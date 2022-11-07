@@ -1,7 +1,7 @@
 /* eslint-disable array-callback-return */
 import React, { useState } from 'react';
 import { useGetSingleProduct, useGetWeedEndData, useFieldStore } from '../../store';
-import { Input, SelectInput } from './InputComponent';
+import { Input, SelectInput } from '../InputComponent';
 
 import Loader from '../Loader';
 

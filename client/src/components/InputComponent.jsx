@@ -1,5 +1,5 @@
 import React from 'react';
-import Select from '../SelectInput';
+import Select from './SelectInput';
 
 const Input = ({ label, defaultValue, handleChange }) => (
   <div className="w-full lg:w-6/12 px-4">

@@ -5,7 +5,7 @@ import { Input, SelectInput } from '../InputComponent';
 
 import Loader from '../Loader';
 
-const PreRolls = () => {
+const Concentrates = () => {
   const fields = useFieldStore((state) => state.fields);
   const loading = useFieldStore((state) => state.loading);
   const product = useGetSingleProduct((state) => state.product);
@@ -18,7 +18,11 @@ const PreRolls = () => {
     },
   ];
 
-  let preRollFormats = [
+  let concentratesFormats = [
+    ...defaultValue,
+  ];
+
+  let concentratesTypes = [
     ...defaultValue,
   ];
 
@@ -51,8 +55,12 @@ const PreRolls = () => {
   ];
 
   fields.map((field) => {
-    if (field.name === 'preRollFormats') {
-      preRollFormats = [...preRollFormats, ...field.tables];
+    if (field.name === 'concentratesFormats') {
+      concentratesFormats = [...concentratesFormats, ...field.tables];
+    }
+
+    if (field.name === 'concentratesTypes') {
+      concentratesTypes = [...concentratesTypes, ...field.tables];
     }
 
     if (field.name === 'phenotypes') {
@@ -83,13 +91,13 @@ const PreRolls = () => {
     }
   });
 
-  const preRollsCategories = categories.filter((category) => (category.label === 'undefined' || category.label === 'THC Pre-Rolls'));
-
-  const formatValue = preRollFormats.find((format) => format.value);
+  const concentrateCategories = categories.filter((category) => (category.label === 'undefined' || category.label === 'Concentrates'));
+  const typeValue = concentratesTypes.find((type) => type.value);
+  const formatValue = concentratesFormats.find((format) => format.value);
   const phenoTypesValue = phenotypes.find((phenotype) => phenotype.value);
   const tarpeneValue = terpenes.find((tarpene) => tarpene.value);
   const yesNoFormateValue = yesNo.find((yesNoFormate) => yesNoFormate.value);
-  const categoryValue = preRollsCategories.find((category) => category.value);
+  const categoryValue = concentrateCategories.find((category) => category.value);
   const qualityValue = qualities.find((quality) => quality.value);
   const effectValue = effects.find((effect) => effect.value);
   const provinceValue = provinces.find((province) => province.value);
@@ -97,6 +105,8 @@ const PreRolls = () => {
   const addData = useGetWeedEndData((state) => state.addData);
 
   const [currentFormat, setCurrentFormat] = useState(formatValue);
+  const [currentType, setCurrentType] = useState(typeValue);
+  const [currentOrganic, setCurrentOrganic] = useState(yesNoFormateValue);
   const [currentCategory, setCurrentCategory] = useState(categoryValue);
   const [currentPhenoTypes, setCurrentPhenoTypes] = useState(phenoTypesValue);
   const [currentQuality, setCurrentQuality] = useState(qualityValue);
@@ -105,10 +115,7 @@ const PreRolls = () => {
   const [currentTarpenes3, setCurrentTarpenes3] = useState(tarpeneValue);
   const [currentEffect, setCurrentEffect] = useState(effectValue);
   const [currentProvince, setCurrentProvince] = useState(provinceValue);
-  const [currentOrganic, setCurrentOrganic] = useState(yesNoFormateValue);
   const [currentMicro, setCurrentMicro] = useState(yesNoFormateValue);
-  const [currentHandTrimmed, setCurrentHandTrimmed] = useState(yesNoFormateValue);
-  const [currentHandDried, setCurrentHandDried] = useState(yesNoFormateValue);
 
   if (loading) {
     return (
@@ -129,7 +136,7 @@ const PreRolls = () => {
       <SelectInput
         label="Format"
         value={product.weedEndData.format ? product.weedEndData.format : 'undefined'}
-        options={preRollFormats}
+        options={concentratesFormats}
         selectedOption={currentFormat}
         handleChange={(event) => {
           addData('format', event.value);
@@ -137,9 +144,19 @@ const PreRolls = () => {
         }}
       />
       <SelectInput
+        label="Type"
+        value={product.weedEndData.type ? product.weedEndData.type : 'undefined'}
+        options={concentratesTypes}
+        selectedOption={currentType}
+        handleChange={(event) => {
+          addData('type', event.value);
+          setCurrentType(event);
+        }}
+      />
+      <SelectInput
         label="Category"
         value={product.weedEndData.category ? product.weedEndData.category : 'undefined'}
-        options={preRollsCategories}
+        options={concentrateCategories}
         selectedOption={currentCategory}
         handleChange={(event) => {
           addData('category', event.value);
@@ -217,26 +234,6 @@ const PreRolls = () => {
         }}
       />
       <SelectInput
-        label="Hand-Trimmed"
-        value={product.weedEndData.handTrimmed ? product.weedEndData.handTrimmed : 'undefined'}
-        options={yesNo}
-        selectedOption={currentHandTrimmed}
-        handleChange={(event) => {
-          addData('handTrimmed', event.value);
-          setCurrentHandTrimmed(event);
-        }}
-      />
-      <SelectInput
-        label="Hand-Dried"
-        value={product.weedEndData.hangDried ? product.weedEndData.hangDried : 'undefined'}
-        options={yesNo}
-        selectedOption={currentHandDried}
-        handleChange={(event) => {
-          addData('hangDried', event.value);
-          setCurrentHandDried(event);
-        }}
-      />
-      <SelectInput
         label="Effect"
         value={product.weedEndData.effect ? product.weedEndData.effect : 'undefined'}
         options={effects}
@@ -262,4 +259,4 @@ const PreRolls = () => {
   );
 };
 
-export default PreRolls;
+export default Concentrates;

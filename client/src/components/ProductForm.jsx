@@ -10,7 +10,7 @@ import { types } from '../data/datatable';
 import Button from './Button';
 import Loader from './Loader';
 import Select from './SelectInput';
-import { Flowers, PreRolls, Vapables } from './TypeComponents';
+import { Beverages, Concentrates, Flowers, PreRolls, Vapables } from './TypeComponents';
 
 const priceDecimal = (str) => {
   const len = str.length;
@@ -411,6 +411,14 @@ const ProductForm = () => {
               {
                 (product.types === 'Vapable')
                   ? <Vapables /> : undefined
+              }
+              {
+                (product.types === 'Concentrates')
+                  ? <Concentrates /> : undefined
+              }
+              {
+                (product.types === 'Beverages')
+                  ? <Beverages /> : undefined
               }
             </div>
             {product.productData ? (
