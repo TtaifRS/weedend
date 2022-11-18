@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
 import { usePopper } from 'react-popper';
-
-import { useUserStore } from '../store';
+import { useNavigate } from 'react-router-dom';
+import { useUserStore, useTokenStore } from '../store';
 import Button from './Button';
 
 const UserDropDown = () => {
@@ -17,9 +17,14 @@ const UserDropDown = () => {
       placement: 'bottom',
     },
   );
-
   const user = useUserStore((state) => state.user);
-
+  const fetchLogout = useTokenStore((state) => state.fetchLogout);
+  const token = useTokenStore((state) => state.token);
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await fetchLogout(token);
+    navigate('/login');
+  };
   return (
     <>
       <button
@@ -51,7 +56,7 @@ const UserDropDown = () => {
           {user.role}
         </p>
         <div className="h-0 my-2 border border-solid border-blueGray-100 " />
-        <Button btnName="logout" classStyles="w-1/2 text-sm py-2  button-hover border" handleClick={() => console.log('logout')} />
+        <Button btnName="logout" classStyles="w-1/2 text-sm py-2  button-hover border" handleClick={handleLogout} />
       </div>
     </>
   );

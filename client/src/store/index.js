@@ -39,7 +39,38 @@ let tokenStore = (set) => ({
       });
     }
   },
+  fetchLogout: async (token) => {
+    try {
+      set({
+        loading: true,
+        error: null,
+      });
 
+      const { data } = await axios({
+        method: 'get',
+        url: '/logout',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (data.error) {
+        set({
+          loading: false,
+          error: 'something went wrong',
+        });
+      } else {
+        set({
+          loading: false,
+          token: null,
+        });
+      }
+    } catch (err) {
+      set({
+        error: 'There was an error, Please try again',
+        loading: false,
+      });
+    }
+  },
 });
 
 tokenStore = devtools(tokenStore);
@@ -86,6 +117,7 @@ let userStore = (set) => ({
       });
     }
   },
+
 });
 
 userStore = devtools(userStore);
@@ -156,19 +188,57 @@ let productStore = (set) => ({
   loading: true,
   products: {},
   error: null,
-  fetchProducts: async (token) => {
+  length: '',
+  aLength: '',
+  fetchProducts: async (token, type, updateFilter, sort, currentLimit, page) => {
     try {
+      const sortBy = sort.join();
+      console.log(sortBy);
       const { data } = await axios({
         method: 'get',
         url: '/products',
+        params: {
+          types: type.value === 'none' ? null : type.value,
+          updated: updateFilter.value === 'none' ? null : updateFilter.value,
+          sort: sort.length ? sortBy : null,
+          limit: currentLimit.value === 'none' ? null : currentLimit.value,
+          page,
+        },
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
 
+      });
       set({
         loading: false,
         products: data.data,
+      });
+    } catch (err) {
+      set({
+        loading: false,
+        error: 'Something went wrong',
+      });
+    }
+  },
+  fetchProductsLength: async (token, type, updateFilter, sort) => {
+    try {
+      const sortBy = sort.join();
+      console.log(sortBy);
+      const { data } = await axios({
+        method: 'get',
+        url: '/products',
+        params: {
+          types: type.value === 'none' ? null : type.value,
+          updated: updateFilter.value === 'none' ? null : updateFilter.value,
+          sort: sort.length ? sortBy : null,
+        },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+
+      });
+      set({
+        length: data.results,
       });
     } catch (err) {
       set({

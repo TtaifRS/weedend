@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import Double from '@mongoosejs/double'
 const { Schema } = mongoose
 
 const productSchema = new Schema({

@@ -13,11 +13,13 @@ const HomePage = () => {
   const userError = useUserStore((state) => state.error);
 
   useEffect(() => {
-    const fetch = async () => {
-      await fetchUser(token);
-    };
-    fetch();
-  }, [fetchUser]);
+    if (token !== null) {
+      const fetch = async () => {
+        await fetchUser(token);
+      };
+      fetch();
+    }
+  }, []);
 
   if (loading) {
     return (
@@ -31,7 +33,7 @@ const HomePage = () => {
     );
   }
 
-  if (!token && error) {
+  if (!token || error) {
     return (
       <Navigate to="/login" />
     );

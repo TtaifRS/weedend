@@ -118,17 +118,17 @@ const Flowers = () => {
 
   return (
     <div className="flex flex-wrap items-center">
-      <Input label="SKU" defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'} handleChange={(event) => addData('sku', event)} />
-      <Input label="Parent SKU" defaultValue={product.weedEndData.parentSku ? product.weedEndData.parentSku : 'undefined'} handleChange={(event) => addData('parentSku', event)} />
-      <Input label="Brand" defaultValue={product.weedEndData.brand ? product.weedEndData.brand : 'undefined'} handleChange={(event) => addData('brand', event)} />
-      <Input label="Product Name" defaultValue={product.weedEndData.productName ? product.weedEndData.productName : 'undefined'} handleChange={(event) => addData('productName', event)} />
-      <Input label="THC %" defaultValue={product.weedEndData.thc ? product.weedEndData.thc : 'undefined'} handleChange={(event) => addData('thc', event)} />
-      <Input label="CBD %" defaultValue={product.weedEndData.cbd ? product.weedEndData.cbd : 'undefined'} handleChange={(event) => addData('cbd', event)} />
-      <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'undefined'} handleChange={(event) => addData('genetics', event)} />
+      <Input label="SKU" defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'none'} handleChange={(event) => addData('sku', event)} />
+      <Input label="Parent SKU" defaultValue={product.weedEndData.parentSku ? product.weedEndData.parentSku : 'none'} handleChange={(event) => addData('parentSku', event)} />
+      <Input label="Brand" defaultValue={product.weedEndData.brand ? product.weedEndData.brand : 'none'} handleChange={(event) => addData('brand', event)} />
+      <Input label="Product Name" defaultValue={product.weedEndData.productName ? product.weedEndData.productName : 'none'} handleChange={(event) => addData('productName', event)} />
+      <Input label="THC %" defaultValue={product.weedEndData.thc ? product.weedEndData.thc : 'none'} handleChange={(event) => addData('thc', event)} />
+      <Input label="CBD %" defaultValue={product.weedEndData.cbd ? product.weedEndData.cbd : 'none'} handleChange={(event) => addData('cbd', event)} />
+      <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'none'} handleChange={(event) => addData('genetics', event)} />
 
       <SelectInput
         label="Format"
-        value={product.weedEndData.format ? product.weedEndData.format : 'undefined'}
+        value={product.weedEndData.format ? product.weedEndData.format : 'none'}
         options={flowerFormat}
         selectedOption={currentFormat}
         handleChange={(event) => {
@@ -138,7 +138,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Category"
-        value={product.weedEndData.category ? product.weedEndData.category : 'undefined'}
+        value={product.weedEndData.category ? product.weedEndData.category : 'none'}
         options={flowerCategories}
         selectedOption={currentCategory}
         handleChange={(event) => {
@@ -148,7 +148,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Phenotype"
-        value={product.weedEndData.phenotype ? product.weedEndData.phenotype : 'undefined'}
+        value={product.weedEndData.phenotype ? product.weedEndData.phenotype : 'none'}
         options={phenotypes}
         selectedOption={currentPhenoTypes}
         handleChange={(event) => {
@@ -158,7 +158,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Quality"
-        value={product.weedEndData.quality ? product.weedEndData.quality : 'undefined'}
+        value={product.weedEndData.quality ? product.weedEndData.quality : 'none'}
         options={qualities}
         selectedOption={currentQuality}
         handleChange={(event) => {
@@ -168,7 +168,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Terpene 1"
-        value={product.weedEndData.terpene1 ? product.weedEndData.terpene1 : 'undefined'}
+        value={product.weedEndData.terpene1 ? product.weedEndData.terpene1 : 'none'}
         options={terpenes}
         selectedOption={currentTarpenes1}
         handleChange={(event) => {
@@ -178,7 +178,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Terpene 2"
-        value={product.weedEndData.terpene2 ? product.weedEndData.terpene2 : 'undefined'}
+        value={product.weedEndData.terpene2 ? product.weedEndData.terpene2 : 'none'}
         options={terpenes}
         selectedOption={currentTarpenes2}
         handleChange={(event) => {
@@ -188,7 +188,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Terpene 3"
-        value={product.weedEndData.terpene3 ? product.weedEndData.terpene3 : 'undefined'}
+        value={product.weedEndData.terpene3 ? product.weedEndData.terpene3 : 'none'}
         options={terpenes}
         selectedOption={currentTarpenes3}
         handleChange={(event) => {
@@ -198,7 +198,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Organic"
-        value={product.weedEndData.organic ? product.weedEndData.organic : 'undefined'}
+        value={product.weedEndData.organic ? product.weedEndData.organic : 'none'}
         options={yesNo}
         selectedOption={currentOrganic}
         handleChange={(event) => {
@@ -208,7 +208,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Micro"
-        value={product.weedEndData.micro ? product.weedEndData.micro : 'undefined'}
+        value={product.weedEndData.micro ? product.weedEndData.micro : 'none'}
         options={yesNo}
         selectedOption={currentMicro}
         handleChange={(event) => {
@@ -218,7 +218,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Hand-Trimmed"
-        value={product.weedEndData.handTrimmed ? product.weedEndData.handTrimmed : 'undefined'}
+        value={product.weedEndData.handTrimmed ? product.weedEndData.handTrimmed : 'none'}
         options={yesNo}
         selectedOption={currentHandTrimmed}
         handleChange={(event) => {
@@ -228,7 +228,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Hand-Dried"
-        value={product.weedEndData.hangDried ? product.weedEndData.hangDried : 'undefined'}
+        value={product.weedEndData.hangDried ? product.weedEndData.hangDried : 'none'}
         options={yesNo}
         selectedOption={currentHandDried}
         handleChange={(event) => {
@@ -238,7 +238,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Effect"
-        value={product.weedEndData.effect ? product.weedEndData.effect : 'undefined'}
+        value={product.weedEndData.effect ? product.weedEndData.effect : 'none'}
         options={effects}
         selectedOption={currentEffect}
         handleChange={(event) => {
@@ -248,7 +248,7 @@ const Flowers = () => {
       />
       <SelectInput
         label="Province"
-        value={product.weedEndData.province ? product.weedEndData.province : 'undefined'}
+        value={product.weedEndData.province ? product.weedEndData.province : 'none'}
         options={provinces}
         selectedOption={currentProvince}
         handleChange={(event) => {
@@ -256,8 +256,8 @@ const Flowers = () => {
           setCurrentProvince(event);
         }}
       />
-      <Input label="Additional Info" defaultValue={product.weedEndData.additionalInfo ? product.weedEndData.additionalInfo : 'undefined'} handleChange={(event) => addData('additionalInfo', event)} />
-      <Input label="Sale Price" defaultValue={product.weedEndData.salePrice ? product.weedEndData.salePrice : 'undefined'} handleChange={(event) => addData('salePrice', event)} />
+      <Input label="Additional Info" defaultValue={product.weedEndData.additionalInfo ? product.weedEndData.additionalInfo : 'none'} handleChange={(event) => addData('additionalInfo', event)} />
+      <Input label="Sale Price" defaultValue={product.weedEndData.salePrice ? product.weedEndData.salePrice : 'none'} handleChange={(event) => addData('salePrice', event)} />
     </div>
   );
 };

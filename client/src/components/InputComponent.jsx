@@ -17,13 +17,13 @@ const Input = ({ label, defaultValue, handleChange }) => (
   </div>
 );
 
-const SelectInput = ({ label, value, handleChange, options, selectedOption }) => (
-  <div className="w-full lg:w-6/12 px-4">
-    <div className="relative flex justify-between items-center w-full mb-3">
-      <div className="block uppercase text-green-600 text-xs font-bold mb-2">
+const SelectInput = ({ label, value, handleChange, options, selectedOption, styles }) => (
+  <div className="w-full px-4">
+    <div className="relative flex justify-around items-center w-full mb-3">
+      <div className="block w-1/6  uppercase text-green-600 text-xs font-bold mb-2">
         {label}
       </div>
-      <div className="block uppercase text-white p-2 bg-green-600 text-xs font-bold mb-2">
+      <div className={`flex justify-center w-1/4 uppercase text-white  p-2 bg-green-600 text-xs font-bold mb-2 ${styles}`}>
         {value}
       </div>
       <div className="block w-1/2 uppercase p-2 text-green-600 text-xs font-bold mb-2">

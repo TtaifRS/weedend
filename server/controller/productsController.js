@@ -4,6 +4,7 @@ import User from '../models/user.js'
 
 import catchAsyncError from '../middlewares/catchAsyncError.js'
 import ErrorHandler from '../utils/errorHandler.js';
+import APIFilters from '../utils/apiFilters.js';
 
 
 
@@ -55,6 +56,9 @@ export const getNewProduct = catchAsyncError(
 
       } = resultData[i]
 
+      let priceToString = price.toString()
+      const priceDecimal = priceToString.substring(0, priceToString.length - 2) + "." + priceToString.substring(priceToString.length - 2)
+
       const productExist = await Product.findOne({ prdocutId: id });
 
 
@@ -73,7 +77,7 @@ export const getNewProduct = catchAsyncError(
             sku,
             barcode,
             imageUrl,
-            price,
+            price: priceDecimal,
             categoryId,
             categoryName,
             parentCategoryName,
@@ -113,7 +117,7 @@ export const getNewProduct = catchAsyncError(
           sku,
           barcode,
           imageUrl,
-          price,
+          price: priceDecimal,
           categoryId,
           categoryName,
           parentCategoryName,
@@ -148,16 +152,32 @@ export const getNewProduct = catchAsyncError(
 
 //get products /api/v1/products 
 export const getProducts = catchAsyncError(async (req, res, next) => {
-  Product.find({}).sort('-createdAt').exec((err, products) => {
-    if (err) {
-      return next(new ErrorHandler('Something went wrong, please try again'))
-    }
+  const apiFilters = new APIFilters(Product.find(), req.query)
+    .filter()
+    .sort()
+    .pagination()
 
-    res.status(200).json({
-      success: true,
-      data: products
-    })
+  const products = await apiFilters.query
+
+  res.status(200).json({
+    success: true,
+    results: products.length,
+    data: products
   })
+
+
+
+
+  // Product.find({}).sort('-createdAt').exec((err, products) => {
+  //   if (err) {
+  //     return next(new ErrorHandler('Something went wrong, please try again'))
+  //   }
+
+  //   res.status(200).json({
+  //     success: true,
+  //     data: products
+  //   })
+  // })
 })
 
 //get single product /api/v1/product/:id 
@@ -553,7 +573,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 terpene2: undefined,
                 terpene3: undefined,
                 organic: undefined,
-                mircro: undefined,
+                micro: undefined,
                 effect: undefined,
                 province: undefined,
                 additionalInfo: undefined,

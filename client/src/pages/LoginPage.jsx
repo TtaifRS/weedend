@@ -34,12 +34,10 @@ const LoginPage = () => {
   const handleClick = async (e) => {
     e.preventDefault();
     const { password } = values;
-    try {
-      await fetchLogin(email, password);
-      navigate('/');
-    } catch (err) {
-      console.log(err);
-    }
+    await fetchLogin(email, password);
+    console.log('login clicked');
+    navigate('/');
+    console.log('navigate');
   };
 
   return (

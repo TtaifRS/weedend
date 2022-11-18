@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 import { MdUpdate } from 'react-icons/md';
 import { BsBoxSeam, BsFillCalendar2WeekFill, BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
 import CardStats from './CardStats';
@@ -13,11 +14,13 @@ const Header = () => {
   const fetchStats = useStatsStore((state) => state.fetchStats);
 
   useEffect(() => {
-    const fetch = async () => {
-      await fetchStats(token);
-    };
-    fetch();
-  }, [fetchStats]);
+    if (token !== null) {
+      const fetch = async () => {
+        await fetchStats(token);
+      };
+      fetch();
+    }
+  }, []);
 
   const total = useStatsStore((state) => state.total);
   const byCatergory = useStatsStore((state) => state.byCategory);
@@ -87,9 +90,8 @@ const Header = () => {
     );
   }
   if (error) {
-    console.log(error);
     return (
-      <div>error</div>
+      <div><Navigate to="/login" /></div>
     );
   }
   return (

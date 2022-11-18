@@ -8,7 +8,11 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const ChartPie = () => {
   const loading = useStatsStore((state) => state.loading);
   const byCategory = useStatsStore((state) => state.byCategory);
+  const error = useStatsStore((state) => state.error);
 
+  if (error) {
+    console.log(error, 'err');
+  }
   if (!loading) {
     const dataSet = {
       label: [],

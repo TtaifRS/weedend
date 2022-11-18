@@ -5,7 +5,7 @@ import { Input, SelectInput } from '../InputComponent';
 
 import Loader from '../Loader';
 
-const Vapables = () => {
+const Edibles = () => {
   const fields = useFieldStore((state) => state.fields);
   const loading = useFieldStore((state) => state.loading);
   const product = useGetSingleProduct((state) => state.product);
@@ -18,11 +18,11 @@ const Vapables = () => {
     },
   ];
 
-  let vapableConcentratesFormats = [
+  let ediblesFormats = [
     ...defaultValue,
   ];
 
-  let vapableConcentratesTypes = [
+  let ediblesTypes = [
     ...defaultValue,
   ];
 
@@ -55,12 +55,12 @@ const Vapables = () => {
   ];
 
   fields.map((field) => {
-    if (field.name === 'vapableConcentratesFormats') {
-      vapableConcentratesFormats = [...vapableConcentratesFormats, ...field.tables];
+    if (field.name === 'ediblesFormats') {
+      ediblesFormats = [...ediblesFormats, ...field.tables];
     }
 
-    if (field.name === 'vapableConcentratesTypes') {
-      vapableConcentratesTypes = [...vapableConcentratesTypes, ...field.tables];
+    if (field.name === 'ediblesTypes') {
+      ediblesTypes = [...ediblesTypes, ...field.tables];
     }
 
     if (field.name === 'phenotypes') {
@@ -91,13 +91,13 @@ const Vapables = () => {
     }
   });
 
-  const vapableCategories = categories.filter((category) => (category.label === 'undefined' || category.label === 'Vapable Concentrates'));
-  const typeValue = vapableConcentratesTypes.find((type) => type.value);
-  const formatValue = vapableConcentratesFormats.find((format) => format.value);
+  const ediblesCategories = categories.filter((category) => (category.label === 'undefined' || category.label === 'Edibles'));
+  const typeValue = ediblesTypes.find((type) => type.value);
+  const formatValue = ediblesFormats.find((format) => format.value);
   const phenoTypesValue = phenotypes.find((phenotype) => phenotype.value);
   const tarpeneValue = terpenes.find((tarpene) => tarpene.value);
   const yesNoFormateValue = yesNo.find((yesNoFormate) => yesNoFormate.value);
-  const categoryValue = vapableCategories.find((category) => category.value);
+  const categoryValue = ediblesCategories.find((category) => category.value);
   const qualityValue = qualities.find((quality) => quality.value);
   const effectValue = effects.find((effect) => effect.value);
   const provinceValue = provinces.find((province) => province.value);
@@ -106,7 +106,9 @@ const Vapables = () => {
 
   const [currentFormat, setCurrentFormat] = useState(formatValue);
   const [currentType, setCurrentType] = useState(typeValue);
-  const [currentKit, setCurrentKit] = useState(yesNoFormateValue);
+  const [currentOrganic, setCurrentOrganic] = useState(yesNoFormateValue);
+  const [currentVegan, setCurrentVegan] = useState(yesNoFormateValue);
+  const [currentGlutenFree, setCurrentGlutenFree] = useState(yesNoFormateValue);
   const [currentCategory, setCurrentCategory] = useState(categoryValue);
   const [currentPhenoTypes, setCurrentPhenoTypes] = useState(phenoTypesValue);
   const [currentQuality, setCurrentQuality] = useState(qualityValue);
@@ -128,14 +130,14 @@ const Vapables = () => {
       <Input label="Parent SKU" defaultValue={product.weedEndData.parentSku ? product.weedEndData.parentSku : 'none'} handleChange={(event) => addData('parentSku', event)} />
       <Input label="Brand" defaultValue={product.weedEndData.brand ? product.weedEndData.brand : 'none'} handleChange={(event) => addData('brand', event)} />
       <Input label="Product Name" defaultValue={product.weedEndData.productName ? product.weedEndData.productName : 'none'} handleChange={(event) => addData('productName', event)} />
-      <Input label="THC %" defaultValue={product.weedEndData.thc ? product.weedEndData.thc : 'none'} handleChange={(event) => addData('thc', event)} />
-      <Input label="CBD %" defaultValue={product.weedEndData.cbd ? product.weedEndData.cbd : 'none'} handleChange={(event) => addData('cbd', event)} />
+      <Input label="CBD Mg Total" defaultValue={product.weedEndData.cbdMgTotal ? product.weedEndData.cbdMgTotal : 'none'} handleChange={(event) => addData('cbdMgTotal', event)} />
+      <Input label="THC Mg Total" defaultValue={product.weedEndData.thcMgTotal ? product.weedEndData.thcMgTotal : 'none'} handleChange={(event) => addData('thcMgTotal', event)} />
       <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'none'} handleChange={(event) => addData('genetics', event)} />
 
       <SelectInput
         label="Format"
         value={product.weedEndData.format ? product.weedEndData.format : 'none'}
-        options={vapableConcentratesFormats}
+        options={ediblesFormats}
         selectedOption={currentFormat}
         handleChange={(event) => {
           addData('format', event.value);
@@ -145,7 +147,7 @@ const Vapables = () => {
       <SelectInput
         label="Type"
         value={product.weedEndData.type ? product.weedEndData.type : 'none'}
-        options={vapableConcentratesTypes}
+        options={ediblesTypes}
         selectedOption={currentType}
         handleChange={(event) => {
           addData('type', event.value);
@@ -153,19 +155,9 @@ const Vapables = () => {
         }}
       />
       <SelectInput
-        label="Kit"
-        value={product.weedEndData.kit ? product.weedEndData.kit : 'none'}
-        options={yesNo}
-        selectedOption={currentKit}
-        handleChange={(event) => {
-          addData('kit', event.value);
-          setCurrentKit(event);
-        }}
-      />
-      <SelectInput
         label="Category"
         value={product.weedEndData.category ? product.weedEndData.category : 'none'}
-        options={vapableCategories}
+        options={ediblesCategories}
         selectedOption={currentCategory}
         handleChange={(event) => {
           addData('category', event.value);
@@ -222,7 +214,36 @@ const Vapables = () => {
           setCurrentTarpenes3(event);
         }}
       />
-
+      <SelectInput
+        label="Organic"
+        value={product.weedEndData.organic ? product.weedEndData.organic : 'none'}
+        options={yesNo}
+        selectedOption={currentOrganic}
+        handleChange={(event) => {
+          addData('organic', event.value);
+          setCurrentOrganic(event);
+        }}
+      />
+      <SelectInput
+        label="Vegan"
+        value={product.weedEndData.vegan ? product.weedEndData.vegan : 'none'}
+        options={yesNo}
+        selectedOption={currentVegan}
+        handleChange={(event) => {
+          addData('vegan', event.value);
+          setCurrentVegan(event);
+        }}
+      />
+      <SelectInput
+        label="Gluten Free"
+        value={product.weedEndData.glutenFree ? product.weedEndData.glutenFree : 'none'}
+        options={yesNo}
+        selectedOption={currentGlutenFree}
+        handleChange={(event) => {
+          addData('glutenFree', event.value);
+          setCurrentGlutenFree(event);
+        }}
+      />
       <SelectInput
         label="Effect"
         value={product.weedEndData.effect ? product.weedEndData.effect : 'none'}
@@ -249,4 +270,4 @@ const Vapables = () => {
   );
 };
 
-export default Vapables;
+export default Edibles;

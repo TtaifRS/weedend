@@ -124,17 +124,17 @@ const Beverages = () => {
 
   return (
     <div className="flex flex-wrap items-center">
-      <Input label="SKU" defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'undefined'} handleChange={(event) => addData('sku', event)} />
-      <Input label="Parent SKU" defaultValue={product.weedEndData.parentSku ? product.weedEndData.parentSku : 'undefined'} handleChange={(event) => addData('parentSku', event)} />
-      <Input label="Brand" defaultValue={product.weedEndData.brand ? product.weedEndData.brand : 'undefined'} handleChange={(event) => addData('brand', event)} />
-      <Input label="Product Name" defaultValue={product.weedEndData.productName ? product.weedEndData.productName : 'undefined'} handleChange={(event) => addData('productName', event)} />
-      <Input label="CBD Mg Total" defaultValue={product.weedEndData.cbdMgTotal ? product.weedEndData.cbdMgTotal : 'undefined'} handleChange={(event) => addData('cbdMgTotal', event)} />
-      <Input label="THC Mg Total" defaultValue={product.weedEndData.thcMgTotal ? product.weedEndData.thcMgTotal : 'undefined'} handleChange={(event) => addData('thcMgTotal', event)} />
-      <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'undefined'} handleChange={(event) => addData('genetics', event)} />
+      <Input label="SKU" defaultValue={product.weedEndData.sku ? product.weedEndData.sku : 'none'} handleChange={(event) => addData('sku', event)} />
+      <Input label="Parent SKU" defaultValue={product.weedEndData.parentSku ? product.weedEndData.parentSku : 'none'} handleChange={(event) => addData('parentSku', event)} />
+      <Input label="Brand" defaultValue={product.weedEndData.brand ? product.weedEndData.brand : 'none'} handleChange={(event) => addData('brand', event)} />
+      <Input label="Product Name" defaultValue={product.weedEndData.productName ? product.weedEndData.productName : 'none'} handleChange={(event) => addData('productName', event)} />
+      <Input label="CBD Mg Total" defaultValue={product.weedEndData.cbdMgTotal ? product.weedEndData.cbdMgTotal : 'none'} handleChange={(event) => addData('cbdMgTotal', event)} />
+      <Input label="THC Mg Total" defaultValue={product.weedEndData.thcMgTotal ? product.weedEndData.thcMgTotal : 'none'} handleChange={(event) => addData('thcMgTotal', event)} />
+      <Input label="Genetics" defaultValue={product.weedEndData.genetics ? product.weedEndData.genetics : 'none'} handleChange={(event) => addData('genetics', event)} />
 
       <SelectInput
         label="Format"
-        value={product.weedEndData.format ? product.weedEndData.format : 'undefined'}
+        value={product.weedEndData.format ? product.weedEndData.format : 'none'}
         options={beverageFormats}
         selectedOption={currentFormat}
         handleChange={(event) => {
@@ -144,7 +144,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Type"
-        value={product.weedEndData.type ? product.weedEndData.type : 'undefined'}
+        value={product.weedEndData.type ? product.weedEndData.type : 'none'}
         options={beverageTypes}
         selectedOption={currentType}
         handleChange={(event) => {
@@ -154,7 +154,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Category"
-        value={product.weedEndData.category ? product.weedEndData.category : 'undefined'}
+        value={product.weedEndData.category ? product.weedEndData.category : 'none'}
         options={beveragesCategories}
         selectedOption={currentCategory}
         handleChange={(event) => {
@@ -164,7 +164,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Phenotype"
-        value={product.weedEndData.phenotype ? product.weedEndData.phenotype : 'undefined'}
+        value={product.weedEndData.phenotype ? product.weedEndData.phenotype : 'none'}
         options={phenotypes}
         selectedOption={currentPhenoTypes}
         handleChange={(event) => {
@@ -174,7 +174,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Quality"
-        value={product.weedEndData.quality ? product.weedEndData.quality : 'undefined'}
+        value={product.weedEndData.quality ? product.weedEndData.quality : 'none'}
         options={qualities}
         selectedOption={currentQuality}
         handleChange={(event) => {
@@ -184,7 +184,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Terpene 1"
-        value={product.weedEndData.terpene1 ? product.weedEndData.terpene1 : 'undefined'}
+        value={product.weedEndData.terpene1 ? product.weedEndData.terpene1 : 'none'}
         options={terpenes}
         selectedOption={currentTarpenes1}
         handleChange={(event) => {
@@ -194,7 +194,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Terpene 2"
-        value={product.weedEndData.terpene2 ? product.weedEndData.terpene2 : 'undefined'}
+        value={product.weedEndData.terpene2 ? product.weedEndData.terpene2 : 'none'}
         options={terpenes}
         selectedOption={currentTarpenes2}
         handleChange={(event) => {
@@ -204,7 +204,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Terpene 3"
-        value={product.weedEndData.terpene3 ? product.weedEndData.terpene3 : 'undefined'}
+        value={product.weedEndData.terpene3 ? product.weedEndData.terpene3 : 'none'}
         options={terpenes}
         selectedOption={currentTarpenes3}
         handleChange={(event) => {
@@ -214,7 +214,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Organic"
-        value={product.weedEndData.organic ? product.weedEndData.organic : 'undefined'}
+        value={product.weedEndData.organic ? product.weedEndData.organic : 'none'}
         options={yesNo}
         selectedOption={currentOrganic}
         handleChange={(event) => {
@@ -224,7 +224,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Effect"
-        value={product.weedEndData.effect ? product.weedEndData.effect : 'undefined'}
+        value={product.weedEndData.effect ? product.weedEndData.effect : 'none'}
         options={effects}
         selectedOption={currentEffect}
         handleChange={(event) => {
@@ -234,7 +234,7 @@ const Beverages = () => {
       />
       <SelectInput
         label="Province"
-        value={product.weedEndData.province ? product.weedEndData.province : 'undefined'}
+        value={product.weedEndData.province ? product.weedEndData.province : 'none'}
         options={provinces}
         selectedOption={currentProvince}
         handleChange={(event) => {
@@ -242,8 +242,8 @@ const Beverages = () => {
           setCurrentProvince(event);
         }}
       />
-      <Input label="Additional Info" defaultValue={product.weedEndData.additionalInfo ? product.weedEndData.additionalInfo : 'undefined'} handleChange={(event) => addData('additionalInfo', event)} />
-      <Input label="Sale Price" defaultValue={product.weedEndData.salePrice ? product.weedEndData.salePrice : 'undefined'} handleChange={(event) => addData('salePrice', event)} />
+      <Input label="Additional Info" defaultValue={product.weedEndData.additionalInfo ? product.weedEndData.additionalInfo : 'none'} handleChange={(event) => addData('additionalInfo', event)} />
+      <Input label="Sale Price" defaultValue={product.weedEndData.salePrice ? product.weedEndData.salePrice : 'none'} handleChange={(event) => addData('salePrice', event)} />
     </div>
   );
 };
