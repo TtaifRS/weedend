@@ -4,7 +4,7 @@ import dot from 'dot-object';
 // eslint-disable-next-line no-unused-vars
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useGetSingleProduct, useTokenStore, useGetWeedEndData, useFieldStore } from '../store';
 import { types } from '../data/datatable';
 import Button from './Button';
@@ -18,15 +18,19 @@ const priceDecimal = (str) => {
   return x;
 };
 
+const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+
 const ProductForm = () => {
+  // req.body
+  let body = {};
   const { id } = useParams();
-  const navigate = useNavigate();
   // store state
   const product = useGetSingleProduct((state) => state.product);
   const loading = useGetSingleProduct((state) => state.loading);
   const fetchProduct = useGetSingleProduct((state) => state.fetchProduct);
   const token = useTokenStore((state) => state.token);
   const weedEndData = useGetWeedEndData((state) => state.weedEndData);
+  const resetWeedEndData = useGetWeedEndData((state) => state.resetWeedEndData);
   const fetchFields = useFieldStore((state) => state.fetchFields);
 
   const typeValue = types.find((type) => type.value);
@@ -44,14 +48,18 @@ const ProductForm = () => {
     value: '',
   }]);
   const [extraField, setExtraField] = useState({});
+  const [updateClick, setUpdateClick] = useState(false);
   // fetcing product to show value
+
   useEffect(() => {
+    body = {};
+    resetWeedEndData();
     const fetch = async () => {
       await fetchProduct(token, id);
       await fetchFields();
     };
     fetch();
-  }, []);
+  }, [updateClick]);
 
   // handle extra key input
   const handleExtraInputChange = (index, event) => {
@@ -122,9 +130,6 @@ const ProductForm = () => {
     addKey.map((key, i) => existingProductData[key] = addValue[i]);
   }
 
-  // req.body
-  let body = {};
-
   if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
     body = {
       ...inputValue,
@@ -132,7 +137,6 @@ const ProductForm = () => {
         ...extraField,
       },
     };
-    console.log('case 1');
   }
 
   if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
@@ -142,7 +146,6 @@ const ProductForm = () => {
         ...existingProductData,
       },
     };
-    console.log('case 2');
   }
 
   if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
@@ -152,7 +155,6 @@ const ProductForm = () => {
         ...weedEndData,
       },
     };
-    console.log('case 3');
   }
 
   if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
@@ -163,7 +165,6 @@ const ProductForm = () => {
         ...existingProductData,
       },
     };
-    console.log('case 4');
   }
 
   if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
@@ -176,7 +177,6 @@ const ProductForm = () => {
         ...extraField,
       },
     };
-    console.log('case 5');
   }
 
   if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
@@ -189,7 +189,8 @@ const ProductForm = () => {
         ...existingProductData,
       },
     };
-    console.log('case 6');
+
+    console.log(body);
   }
 
   if (Object.keys(extraField).length > 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length > 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length > 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
@@ -203,24 +204,21 @@ const ProductForm = () => {
         ...existingProductData,
       },
     };
-    console.log('case 7');
   }
 
   if (Object.keys(extraField).length === 0 && Object.getPrototypeOf(extraField) === Object.prototype && Object.keys(existingProductData).length === 0 && Object.getPrototypeOf(existingProductData) === Object.prototype && Object.keys(weedEndData).length === 0 && Object.getPrototypeOf(weedEndData) === Object.prototype) {
     body = {
       ...inputValue,
     };
-    console.log('case 8');
   }
 
   body = dot.dot(body);
-  console.log(body);
 
   // on update
-
+  // main update button
   const handleClick = async () => {
     if (Object.keys(body).length > 1) {
-      const reqData = await axios({
+      const reqData = await axiosInstance({
         method: 'put',
         url: `/product/${id}`,
         data: body,
@@ -233,8 +231,8 @@ const ProductForm = () => {
         toast.error('Something went wrong');
       }
 
-      navigate(0);
       toast.success('Update Successfull');
+      setUpdateClick(!updateClick);
     } else {
       toast.error('Nothing to update');
     }

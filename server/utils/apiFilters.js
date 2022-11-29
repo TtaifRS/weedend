@@ -17,7 +17,6 @@ class APIFilters {
 
 
     let queryStr = JSON.stringify(queryCopy)
-    console.log(queryCopy)
 
     this.query = this.query.find(JSON.parse(queryStr))
 
@@ -40,7 +39,7 @@ class APIFilters {
 
   pagination() {
     const page = parseInt(this.queryStr.page, 10) || 1
-    const limit = parseInt(this.queryStr.limit, 10) || 10
+    const limit = parseInt(this.queryStr.limit, 10) || null
     const skipResults = (page - 1) * limit
 
     this.query = this.query.skip(skipResults).limit(limit)

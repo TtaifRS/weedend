@@ -99,7 +99,7 @@ const limitFilter = [
   {
     id: 1,
     label: 'Default',
-    value: 'none',
+    value: '10',
   },
   {
     id: 2,
@@ -128,6 +128,8 @@ const limitFilter = [
   },
 ];
 
+const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+
 const CardTable = () => {
   const navigate = useNavigate();
   const fetchProduct = useProductStore((state) => state.fetchProducts);
@@ -149,12 +151,17 @@ const CardTable = () => {
   const [currentUpdateFilter, setCurrentUpdateFilter] = useState(updateValue);
   const [currentLimit, setCurrentLimit] = useState(limitValue);
 
+  useEffect(() => {
+    const fetch = async () => {
+      await fetchProductsLength(token, type, currentUpdateFilter);
+    };
+    fetch();
+  }, [fetchProductsLength, type, currentUpdateFilter]);
   const itemsPerPage = currentLimit.value === 'none' ? 10 : parseInt(currentLimit.value, 10);
   const pageCount = Math.ceil(length / itemsPerPage);
-
   useEffect(() => {
     if (pageNumber > pageCount) {
-      setPageNumber(null);
+      setPageNumber(1);
     }
 
     const fetch = async () => {
@@ -162,13 +169,6 @@ const CardTable = () => {
     };
     fetch();
   }, [fetchProduct, sort, type, currentUpdateFilter, currentLimit, pageNumber]);
-
-  useEffect(() => {
-    const fetch = async () => {
-      await fetchProductsLength(token, type, currentUpdateFilter, sort);
-    };
-    fetch();
-  }, [fetchProduct, sort, type, currentUpdateFilter]);
 
   const handleSort = (el) => {
     if (!sort.includes(el) && !sort.includes(`-${el}`)) {
@@ -184,8 +184,8 @@ const CardTable = () => {
     return sort;
   };
   const handleClick = async () => {
-    toast('⌛ pending', { hideProgressBar: true });
-    const reqData = await axios({
+    toast('⌛ Checking', { hideProgressBar: true });
+    const reqData = await axiosInstance({
       method: 'post',
       url: '/products/new',
       headers: {
@@ -194,13 +194,11 @@ const CardTable = () => {
     });
 
     if (reqData.error) {
-      console.log(reqData.error);
       toast.error('Something went wrong');
     }
 
     navigate(0);
     toast.success('Update Successfull');
-    console.log(reqData);
   };
 
   const handleResetClick = () => {
@@ -218,19 +216,17 @@ const CardTable = () => {
     setCurrentLimit({
       id: 1,
       label: 'Default',
-      value: 'none',
+      value: '10',
     });
 
     setSort([]);
-    setPageNumber(null);
+    setPageNumber(1);
   };
 
   const a = currentLimit.value !== 'none' ? currentLimit.value : 10;
   const b = pageNumber || 1;
   const lastLimit = a * b;
   const firstLimit = (a * b) - (a - 1);
-  console.log(lastLimit, 'last');
-  console.log(firstLimit, 'first');
 
   if (loading) {
     return (
@@ -288,6 +284,12 @@ const CardTable = () => {
                       selectedOption={type}
                       handleChange={(event) => {
                         setType(event);
+                        setPageNumber(1);
+                        setCurrentLimit({
+                          id: 1,
+                          label: 'Default',
+                          value: '10',
+                        });
                       }}
                     />
                   </div>
@@ -300,6 +302,12 @@ const CardTable = () => {
                       selectedOption={currentUpdateFilter}
                       handleChange={(event) => {
                         setCurrentUpdateFilter(event);
+                        setPageNumber(1);
+                        setCurrentLimit({
+                          id: 1,
+                          label: 'Default',
+                          value: '10',
+                        });
                       }}
                     />
                   </div>
@@ -321,7 +329,7 @@ const CardTable = () => {
                   </div>
                   <div className="mr-3 flex flex-col justify-end items-end">
                     <div className="font-bold text-sm">
-                      {`${firstLimit} - ${lastLimit}`}  of over {`${length}`} products
+                      {`${firstLimit} - ${lastLimit > length ? length : lastLimit}`}  of over {`${length}`} products
                     </div>
                     <div className="mt-2">
                       <button type="submit" className="flex items-center justify-center p-2 border-2 hover:bg-green-400" onClick={handleResetClick}>
@@ -529,6 +537,7 @@ const CardTable = () => {
             breakLabel="..."
             breakClassName="break-me"
             onPageChange={(i) => setPageNumber(i.selected + 1)}
+            forcePage={pageNumber - 1}
             pageCount={pageCount}
             marginPagesDisplayed={2}
             pageRangeDisplayed={5}

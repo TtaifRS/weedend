@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import Product from '../models/product.js';
-import User from '../models/user.js'
+import Producer from '../models/producer.js';
 
 import catchAsyncError from '../middlewares/catchAsyncError.js'
 import ErrorHandler from '../utils/errorHandler.js';
@@ -93,8 +93,8 @@ export const getNewProduct = catchAsyncError(
             weedEndData: productExist.weedEndData,
             productData: productExist.productData,
             createdAt: productExist.createdAt,
-            updatedAt: productExist.productData ? productExist.updatedAt : "null",
-            updated: productExist.productData ? true : false,
+            updatedAt: productExist.productData || productExist.weedEndData ? productExist.updatedAt : "null",
+            updated: productExist.productData || productExist.weedEndData ? true : false,
 
           },
           {
@@ -191,86 +191,7 @@ export const getProduct = catchAsyncError(async (req, res, next) => {
 })
 
 
-
-
-//update products /api/v1/product/:id 
-// export const updateProduct = catchAsyncError(async (req, res, next) => {
-//   const id = req.params.id
-
-
-//   if (id.match(/^[0-9a-fA-F]{24}$/)) {
-//     let product = await Product.findById(req.params.id)
-
-//     if (!product) {
-//       return next(new ErrorHandler('Product not found', 404))
-//     }
-
-
-//     product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
-
-//     res.status(200).json({
-//       success: true,
-//       message: 'Products updated',
-//       data: product
-//     })
-//   } else {
-//     return next(new ErrorHandler('Invalid ID'), 404)
-//   }
-// })
-
-//update product v2 /api/v1/product/new/:id
-// export const updateProduct = catchAsyncError(async (req, res, next) => {
-//   const id = req.params.id
-//   let product = await Product.findById(id)
-//   if (id.match(/^[0-9a-fA-F]{24}$/)) {
-
-//     let removeObj = []
-
-//     Object.entries(req.body).forEach(([key, val]) => {
-//       if (!val) { delete req.body[key]; removeObj.push(key) }
-//     })
-
-//     let bulkArr = []
-
-//     if (req.body) bulkArr.push({
-//       updateOne: {
-//         "filter": { id },
-//         "update": { $set: req.body }
-//       }
-//     })
-
-//     if (Object.entries(removeObj).length > 0 && removeObj.constructor === Object) bulkArr.push({
-//       updateOne: {
-//         "filter": { id },
-//         "update": { $unset: removeObj }
-//       }
-//     })
-
-//     if (removeObj.length > 0) {
-//       product = await Product.updateOne(
-//         { "_id": id },
-//         [
-//           {
-//             $set: req.body
-//           },
-//           { $unset: removeObj }
-//         ]
-//       )
-//     } else {
-//       product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true })
-//     }
-
-
-//     res.status(200).json({
-//       success: true,
-//       message: 'Products updated',
-//       data: product
-//     })
-//   } else {
-//     return next(new ErrorHandler('Invalid ID'), 404)
-//   }
-// })
-
+//update product /api/v1/product/:id
 
 export const updateProduct = catchAsyncError(async (req, res, next) => {
   const id = req.params.id
@@ -295,6 +216,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thc: undefined,
                 cbd: undefined,
@@ -339,6 +261,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thc: undefined,
                 cbd: undefined,
@@ -384,6 +307,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thc: undefined,
                 cbd: undefined,
@@ -427,6 +351,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thc: undefined,
                 cbd: undefined,
@@ -472,6 +397,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 cbdMgTotal: undefined,
                 thcMgTotal: undefined,
@@ -515,6 +441,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thcMgTotal: undefined,
                 cbdMgTotal: undefined,
@@ -560,6 +487,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thcMg: undefined,
                 cbdMg: undefined,
@@ -604,6 +532,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 thcMg: undefined,
                 cbdMg: undefined,
@@ -643,6 +572,7 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
                 parentSku: undefined,
                 brand: undefined,
                 productName: undefined,
+                producer: undefined,
                 variants: false,
                 format: undefined,
                 category: undefined,
@@ -664,44 +594,6 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
       )
     }
 
-    /**
-    * @Producers
-    * 
-    */
-
-    if (req.body.types && req.body.types === 'Producers') {
-      product = await Product.updateOne(
-        { "_id": id },
-        [
-          {
-            $unset: ['weedEndData']
-          },
-          {
-            $set: {
-              weedEndData: {
-                producerID: undefined,
-                producerName: undefined,
-                organic: undefined,
-                micro: undefined,
-                handTrimmed: undefined,
-                hangDry: undefined,
-                province: undefined,
-                flower: undefined,
-                preRoll: undefined,
-                edibles: undefined,
-                beverages: undefined,
-                softGels: undefined,
-                oils: undefined,
-                looseConcentrates: undefined,
-                catridges: undefined,
-                topicals: undefined,
-                additionalInfo: undefined
-              }
-            }
-          }
-        ]
-      )
-    }
 
     /**
      * @Defaults
@@ -717,8 +609,6 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
 
         ]
       )
-
-      console.log(product.weedEndData)
     }
 
     let removeObj = []
@@ -767,6 +657,233 @@ export const updateProduct = catchAsyncError(async (req, res, next) => {
     return next(new ErrorHandler('Invalid ID'), 404)
   }
 })
+
+
+/**
+ * 
+ * 
+ * @producer upadte
+ * 
+ */
+//update producers of producer /api/v1/product/producer/:id 
+export const updateProducer = catchAsyncError(async (req, res, next) => {
+  const id = req.params.id
+  let product = await Product.findById(id)
+  const { producerName } = req.body
+  const producer = await Producer.findOne({ producerName })
+
+  /**
+   * @Flowers
+   * 
+   */
+  if (product.types === 'Flowers') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              micro: producer.micro === true ? "yes" : "no",
+              handTrimmed: producer.handTrimmed === true ? "yes" : "no",
+              hangDried: producer.hangDried === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+   * @PreRolls
+   * 
+   */
+  if (product.types === 'Pre-Rolls') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              micro: producer.micro === true ? "yes" : "no",
+              handTrimmed: producer.handTrimmed === true ? "yes" : "no",
+              hangDried: producer.hangDried === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+   * @Vapable
+   * 
+   */
+
+  if (product.types === 'Vapable') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+  * @Concentrates
+  * 
+  */
+
+  if (product.types === 'Concentrates') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              micro: producer.micro === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+
+  /**
+  * @Beverages
+  * 
+  */
+
+  if (product.types === 'Beverages') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              variants: false,
+              organic: producer.organic === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+   * @Edibles
+   * 
+   */
+
+  if (product.types === 'Edibles') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+   * @Oils
+   * 
+   */
+
+  if (product.types === 'Oils') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              micro: producer.micro === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+   * @Topicals
+   * 
+   */
+
+  if (product.types === 'Topicals') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+
+  /**
+  * @Seeds
+  * 
+  */
+
+  if (product.types === 'Seeds') {
+    product = await Product.updateOne(
+      { "_id": id },
+      [
+        {
+          $set: {
+            weedEndData: {
+              producer: producerName,
+              organic: producer.organic === true ? "yes" : "no",
+              additionalInfo: producer.additionalInfo,
+            }
+          }
+        }
+      ]
+    )
+  }
+  product = await Product.findById(id)
+  res.status(200).json({
+    success: true,
+    message: 'Products producer updated',
+    data: product
+  })
+}
+)
 
 //delete products /api/v1/product/:id 
 export const deleteProduct = catchAsyncError(async (req, res, next) => {

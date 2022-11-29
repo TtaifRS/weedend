@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from 'react-toastify';
 import IconButton from '@material-ui/core/IconButton';
 import Visibility from '@material-ui/icons/Visibility';
 import InputAdornment from '@material-ui/core/InputAdornment';
@@ -17,6 +17,8 @@ const LoginPage = () => {
     showPassword: false,
   });
 
+  const [checkClick, setCheckClick] = useState(false);
+
   const [email, setEmail] = useState('');
 
   const handleShowPassword = () => {
@@ -30,14 +32,25 @@ const LoginPage = () => {
     setValues({ ...values, [prop]: event.target.value });
   };
 
+  const error = useTokenStore((state) => state.error);
+  const loading = useTokenStore((state) => state.loading);
   const fetchLogin = useTokenStore((state) => state.fetchLogin);
+
+  useEffect(() => {
+    if (!loading) {
+      navigate('/');
+    }
+    if (error !== null) {
+      toast.error('email or password is incorrect');
+    }
+  }, [checkClick]);
+
   const handleClick = async (e) => {
     e.preventDefault();
     const { password } = values;
+
     await fetchLogin(email, password);
-    console.log('login clicked');
-    navigate('/');
-    console.log('navigate');
+    setCheckClick(!checkClick);
   };
 
   return (
@@ -82,6 +95,7 @@ const LoginPage = () => {
                 )}
               />
             </div>
+            <ToastContainer />
             <div className="mb-4">
               <Button btnName="Login" classStyles="w-full font-semibold  px-5 py-3 button-hover border" handleClick={handleClick} />
             </div>

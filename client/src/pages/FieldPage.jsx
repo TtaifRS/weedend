@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { TagsInput } from 'react-tag-input-component';
+import ReactTooltip from 'react-tooltip';
 import axios from 'axios';
 import { RiEditCircleFill } from 'react-icons/ri';
 import { ImBackward, ImCross } from 'react-icons/im';
@@ -10,11 +11,13 @@ import { GrUpdate } from 'react-icons/gr';
 import { Sidebar, Navbar, Header, Button, Loader } from '../components';
 import { useFieldStore } from '../store';
 
+const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+
 const Tags = ({ field }) => {
   const [newData, setNewData] = useState([]);
   const navigate = useNavigate();
   const handleNewData = async (name) => {
-    const { data } = await axios({
+    const { data } = await axiosInstance({
       method: 'post',
       url: '/add',
       data: {
@@ -25,7 +28,6 @@ const Tags = ({ field }) => {
     if (data.success) {
       navigate(0);
     }
-    console.log(data);
   };
 
   return (
@@ -74,7 +76,7 @@ const FieldPage = () => {
   };
 
   const handleDelete = async (id, d) => {
-    const { data } = await axios({
+    const { data } = await axiosInstance({
       method: 'put',
       url: '/delete/field',
       data: {
@@ -94,7 +96,7 @@ const FieldPage = () => {
       data: updateData,
     };
 
-    const { data } = await axios({
+    const { data } = await axiosInstance({
       method: 'put',
       url: '/update/field',
       data: body,
@@ -144,7 +146,8 @@ const FieldPage = () => {
                                 {
                                   isUpdated === e._id ? (
                                     <button type="submit" onClick={() => navigate(0)}>
-                                      <MdRestartAlt color="blue" />
+                                      <p data-tip="RELOAD" data-delay-show="300"><MdRestartAlt color="blue" /></p>
+                                      <ReactTooltip place="right" type="success" effect="solid" padding="4px" delayShow={300} />
                                     </button>
                                   )
                                     : null
@@ -164,44 +167,62 @@ const FieldPage = () => {
                                     : (
                                       <div className="flex flex-col">
                                         <div>
-                                          <button
-                                            type="submit"
-                                            onClick={() => {
-                                              setIsSelected(undefined);
-                                              setIsDelete(false);
-                                            }}
-                                          >
-                                            <ImBackward color="yellow" />
-                                          </button>
+                                          <p data-tip="BACK" data-delay-show="300">
+                                            <button
+                                              type="submit"
+                                              onClick={() => {
+                                                setIsSelected(undefined);
+                                                setIsDelete(false);
+                                              }}
+                                            >
+                                              <ImBackward color="yellow" />
+
+                                            </button>
+                                          </p>
+                                          <ReactTooltip place="right" type="error" effect="solid" padding="4px" delayShow={300} />
                                         </div>
                                         <div>
                                           {
                                             !isDelete
                                               ? (
-                                                <button
-                                                  type="submit"
-                                                  onClick={() => setIsDelete(true)}
-                                                >
-                                                  <ImCross color="red" />
-                                                </button>
+                                                <div>
+                                                  <p data-tip="DELETE" data-delay-show="300">
+                                                    <button
+                                                      type="submit"
+                                                      onClick={() => setIsDelete(true)}
+                                                    >
+                                                      <ImCross color="red" />
+
+                                                    </button>
+                                                  </p>
+                                                  <ReactTooltip place="right" type="warning" effect="solid" padding="4px" delayShow={300} />
+                                                </div>
                                               )
                                               : (
-                                                <button
-                                                  type="submit"
-                                                  onClick={() => handleDelete(field._id, e.label)}
-                                                >
-                                                  <MdDelete color="red" />
-                                                </button>
+                                                <div>
+                                                  <p data-tip="Confirm Delete" data-delay-show="300">
+                                                    <button
+                                                      type="submit"
+                                                      onClick={() => handleDelete(field._id, e.label)}
+                                                    >
+                                                      <MdDelete color="red" />
+                                                    </button>
+                                                  </p>
+                                                  <ReactTooltip place="right" type="error" effect="solid" padding="4px" delayShow={300} />
+                                                </div>
                                               )
                                           }
                                         </div>
                                         <div>
-                                          <button
-                                            type="submit"
-                                            onClick={() => handleUpdate(field._id, e.label, e._id)}
-                                          >
-                                            <GrUpdate color="blue" />
-                                          </button>
+                                          <p data-tip="UPDATE" data-delay-show="300">
+                                            <button
+                                              type="submit"
+                                              onClick={() => handleUpdate(field._id, e.label, e._id)}
+                                            >
+                                              <GrUpdate color="blue" />
+                                            </button>
+                                          </p>
+                                          <ReactTooltip place="right" type="warning" effect="solid" padding="4px" delayShow={300} />
                                         </div>
                                       </div>
                                     )

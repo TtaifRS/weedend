@@ -82,25 +82,26 @@ const Sidebar = () => {
                 Fields
               </NavLink>
             </li>
+
+          </ul>
+          <hr className="my-4 md:min-w-full" />
+          <p className="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
+            User Section
+          </p>
+          <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             <li className="items-center">
               <NavLink end className={({ isActive }) => (isActive ? `${activeLink} text-xs flex uppercase py-3 font-bold items-center` : `${inActiveLink} text-xs flex uppercase py-3 font-bold items-center`)} to="/">
                 <RiUser2Fill className="text-sm mr-2" />
                 Users
               </NavLink>
             </li>
-          </ul>
-          <hr className="my-4 md:min-w-full" />
-          <p className="md:min-w-full text-slate-500 text-xs uppercase font-bold block pt-1 pb-4 no-underline">
-            Authentication
-          </p>
-          <ul className="md:flex-col md:min-w-full flex flex-col list-none">
             <li className="items-center">
               <NavLink
                 to="/"
                 className={({ isActive }) => (isActive ? `${activeLink} text-xs flex uppercase py-3 font-bold items-center` : `${inActiveLink} text-xs flex uppercase py-3 font-bold items-center`)}
               >
                 <RiUserAddFill className="text-sm mr-2" />
-                Sign Up
+                Add User
               </NavLink>
             </li>
           </ul>

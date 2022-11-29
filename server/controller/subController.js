@@ -98,7 +98,6 @@ export const subscriptionStaus = catchAsyncError(async (req, res, next) => {
     })
 
   })
-  console.log(subscription.data)
   const subscriptionExist = getDifference(subData, user.subscriptionStatus)
   if (subscriptionExist.length !== 0) {
     const updatedUser = await User.findByIdAndUpdate(

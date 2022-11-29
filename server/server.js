@@ -2,7 +2,10 @@ import express from 'express'
 import dotenv from 'dotenv'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
-
+import rateLimit from 'express-rate-limit'
+import helmet from 'helmet'
+// import mongoSanitize from 'express-mongo-sanitize'
+import xss from 'xss-clean'
 
 //initializing dotenv
 dotenv.config({ path: './config/config.env' })
@@ -15,6 +18,7 @@ import auth from './routes/auth.js'
 import users from './routes/users.js'
 import subscription from './routes/sub.js'
 import field from './routes/field.js'
+import producer from './routes/producer.js'
 
 //other imports 
 import connectDatabase from './config/database.js'
@@ -35,14 +39,35 @@ process.on('uncaughtException', err => {
 //database connection 
 connectDatabase()
 
+//{ origin: 'http://localhost:3000', credentials: true }
+app.use(cors())
 
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }))
+//http header security 
+app.use(helmet())
 
 //express bodyparser 
 app.use(express.json())
 
 //cookie perser 
 app.use(cookieParser())
+
+//santize data 
+// app.use(mongoSanitize())
+
+//prevent xss attcks 
+app.use(xss())
+
+//rare limit 
+const limiter = rateLimit({
+  windowMs: 10 * 60 * 1000, // 10 minutes
+  max: 200, // Limit each IP to 200 requests per `window` (here, per 10 minutes)
+  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
+
+app.use(limiter)
+
+
 
 
 //route
@@ -51,7 +76,7 @@ app.use('/api/v1', auth)
 app.use('/api/v1', users)
 app.use('/api/v1', subscription)
 app.use('/api/v1', field)
-
+app.use('/api/v1', producer)
 //development 
 app.get('/stripe/success', (req, res) => {
   res.send("Subscription successsful")

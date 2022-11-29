@@ -11,15 +11,25 @@ const HomePage = () => {
   const error = useUserStore((state) => state.error);
   const fetchUser = useUserStore((state) => state.fetchUser);
   const userError = useUserStore((state) => state.error);
-
   useEffect(() => {
-    if (token !== null) {
-      const fetch = async () => {
-        await fetchUser(token);
-      };
+    const fetch = async () => {
+      await fetchUser(token);
+    };
+    if (token && token.length !== 0) {
       fetch();
     }
-  }, []);
+  }, [token]);
+
+  if (token === null) {
+    return (
+      <Navigate to="/login" />
+    );
+  }
+  if (token.length === 0) {
+    return (
+      <Navigate to="/login" />
+    );
+  }
 
   if (loading) {
     return (
@@ -27,13 +37,7 @@ const HomePage = () => {
     );
   }
 
-  if (userError) {
-    return (
-      <Navigate to="/login" />
-    );
-  }
-
-  if (!token || error) {
+  if (userError || error) {
     return (
       <Navigate to="/login" />
     );

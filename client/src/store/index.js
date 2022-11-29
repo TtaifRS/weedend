@@ -2,18 +2,16 @@ import create from 'zustand';
 import axios from 'axios';
 import { persist, devtools } from 'zustand/middleware';
 
+// eslint-disable-next-line no-underscore-dangle
+const axiosInstance = axios.create({ baseURL: process.env.REACT_APP_API_URL });
+
 let tokenStore = (set) => ({
   token: '',
-  loading: false,
+  loading: true,
   error: null,
   fetchLogin: async (email, password) => {
     try {
-      set({
-        loading: true,
-        error: null,
-      });
-
-      const { data } = await axios({
+      const { data } = await axiosInstance({
         method: 'post',
         url: '/login',
         data: {
@@ -21,32 +19,22 @@ let tokenStore = (set) => ({
           password,
         },
       });
-      if (data.error) {
-        set({
-          loading: false,
-          error: 'Email or Password is wrong!',
-        });
-      } else {
-        set({
-          loading: false,
-          token: data.token,
-        });
-      }
+
+      set({
+        loading: false,
+        token: data.token,
+        error: null,
+      });
     } catch (err) {
       set({
         error: 'There was an error, Please try again',
-        loading: false,
+        loading: true,
       });
     }
   },
   fetchLogout: async (token) => {
     try {
-      set({
-        loading: true,
-        error: null,
-      });
-
-      const { data } = await axios({
+      const { data } = await axiosInstance({
         method: 'get',
         url: '/logout',
         headers: {
@@ -60,8 +48,8 @@ let tokenStore = (set) => ({
         });
       } else {
         set({
-          loading: false,
-          token: null,
+          loading: true,
+          token: '',
         });
       }
     } catch (err) {
@@ -84,11 +72,14 @@ let userStore = (set) => ({
     email: '',
     role: '',
   },
-  loading: false,
+  loading: true,
   error: null,
   fetchUser: async (token) => {
     try {
-      const { data } = await axios({
+      set({
+        loading: true,
+      });
+      const { data } = await axiosInstance({
         method: 'get',
         url: '/profile',
         headers: {
@@ -137,7 +128,10 @@ let statsStore = (set) => ({
   error: null,
   fetchStats: async (token) => {
     try {
-      const { data } = await axios({
+      set({
+        loading: true,
+      });
+      const { data } = await axiosInstance({
         method: 'get',
         url: '/product/stats',
         headers: {
@@ -192,9 +186,11 @@ let productStore = (set) => ({
   aLength: '',
   fetchProducts: async (token, type, updateFilter, sort, currentLimit, page) => {
     try {
+      set({
+        loading: true,
+      });
       const sortBy = sort.join();
-      console.log(sortBy);
-      const { data } = await axios({
+      const { data } = await axiosInstance({
         method: 'get',
         url: '/products',
         params: {
@@ -220,17 +216,14 @@ let productStore = (set) => ({
       });
     }
   },
-  fetchProductsLength: async (token, type, updateFilter, sort) => {
+  fetchProductsLength: async (token, type, updateFilter) => {
     try {
-      const sortBy = sort.join();
-      console.log(sortBy);
-      const { data } = await axios({
+      const { data } = await axiosInstance({
         method: 'get',
         url: '/products',
         params: {
           types: type.value === 'none' ? null : type.value,
           updated: updateFilter.value === 'none' ? null : updateFilter.value,
-          sort: sort.length ? sortBy : null,
         },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -259,7 +252,11 @@ let GetSingleProduct = (set) => ({
   error: null,
   fetchProduct: async (token, id) => {
     try {
-      const { data } = await axios({
+      set({
+        loading: true,
+        product: {},
+      });
+      const { data } = await axiosInstance({
         method: 'get',
         url: `/product/${id}`,
         headers: {
@@ -270,10 +267,11 @@ let GetSingleProduct = (set) => ({
       set({
         loading: false,
         product: data.data,
+        error: null,
       });
     } catch (err) {
       set({
-        loading: false,
+        loading: true,
         error: 'Something went wrong',
       });
     }
@@ -299,6 +297,11 @@ let GetWeedEndData = (set) => ({
       },
     }));
   },
+  resetWeedEndData: () => {
+    set(() => ({
+      weedEndData: {},
+    }));
+  },
 });
 
 GetWeedEndData = devtools(GetWeedEndData);
@@ -311,7 +314,10 @@ let fieldStore = (set) => ({
   error: null,
   fetchFields: async () => {
     try {
-      const { data } = await axios({
+      set({
+        loading: true,
+      });
+      const { data } = await axiosInstance({
         method: 'get',
         url: '/fields',
       });
