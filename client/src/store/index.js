@@ -338,3 +338,116 @@ let fieldStore = (set) => ({
 fieldStore = devtools(fieldStore);
 
 export const useFieldStore = create(fieldStore);
+
+let producerStore = (set) => ({
+  loading: true,
+  producers: {},
+  singleProducer: {},
+  error: null,
+  fetchProducers: async () => {
+    try {
+      set({
+        loading: true,
+      });
+      const { data } = await axiosInstance({
+        method: 'get',
+        url: '/producers/',
+      });
+
+      set({
+        loading: false,
+        producers: data.data,
+      });
+    } catch (err) {
+      set({
+        loading: false,
+        error: 'Something went wrong',
+      });
+    }
+  },
+
+  fetchSingleProducer: async (id) => {
+    try {
+      set({
+        loading: true,
+      });
+      const { data } = await axiosInstance({
+        method: 'get',
+        url: `/producer/${id}`,
+      });
+
+      set({
+        loading: false,
+        singleProducer: data.data,
+      });
+    } catch (err) {
+      set({
+        loading: false,
+        error: 'Something went wrong',
+      });
+    }
+  },
+  fetchProducerUpdate: async (id, data) => {
+    try {
+      set({
+        loading: true,
+      });
+      const { p } = await axiosInstance({
+        method: 'put',
+        url: `/update/producer/${id}`,
+        data,
+      });
+
+      set({
+        loading: false,
+        singleProducer: p.data,
+      });
+    } catch (err) {
+      set({
+        loading: false,
+        errorUpdate: err,
+      });
+    }
+  },
+});
+
+producerStore = devtools(producerStore);
+
+export const useProducerStore = create(producerStore);
+
+let producerByTypeStore = (set) => ({
+  loading: true,
+  producerByType: {},
+  producerNameByType: [],
+  error: null,
+
+  fetchProducersByType: async (type) => {
+    if (type) {
+      try {
+        set({
+          loading: true,
+        });
+        const { data } = await axiosInstance({
+          method: 'get',
+          url: `/producers/types/?${type}=true`,
+        });
+
+        const nameData = data.data.map((producer, i) => ({ id: i, label: producer.producerName, value: producer.producerName }));
+        set({
+          loading: false,
+          producerByType: data.data,
+          producerNameByType: nameData,
+        });
+      } catch (err) {
+        set({
+          loading: false,
+          error: 'Something went wrong',
+        });
+      }
+    }
+  },
+});
+
+producerByTypeStore = devtools(producerByTypeStore);
+
+export const useProducerByTypeStore = create(producerByTypeStore);

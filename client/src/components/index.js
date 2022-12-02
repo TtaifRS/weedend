@@ -10,5 +10,7 @@ import ChartBar from './ChartBar';
 import CardTable from './CardTable';
 import ProductForm from './ProductForm';
 import Loader from './Loader';
+import ProducerTable from './ProducerTable';
+import ProducerForm from './ProducerForm';
 
-export { Button, Navbar, UserDropDown, Sidebar, CardStats, Header, Dashboard, ChartPie, ChartBar, CardTable, ProductForm, Loader };
+export { Button, Navbar, UserDropDown, Sidebar, CardStats, Header, Dashboard, ChartPie, ChartBar, CardTable, ProductForm, Loader, ProducerTable, ProducerForm };

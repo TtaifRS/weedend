@@ -44,6 +44,19 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
 
 })
 
+//update multiple producers /api/v1/update/multi/producers 
+export const updateMultiProdcuers = catchAsyncError(async (req, res, next) => {
+  const ids = req.body.ids
+  const data = req.body
+  await Producer.updateMany({ "_id": { $in: ids } }, { $inc: { data } });
+
+  res.status(200).json({
+    success: true,
+    ids,
+    data
+  })
+})
+
 //get producers /api/v1/prdocuers
 export const getProducers = catchAsyncError(async (req, res, next) => {
   const Producers = await Producer.find()
@@ -53,6 +66,17 @@ export const getProducers = catchAsyncError(async (req, res, next) => {
     data: Producers
   })
 })
+
+export const getSingleProducers = catchAsyncError(async (req, res, next) => {
+  const id = req.params.id
+  const producer = await Producer.findById(id)
+
+  res.status(200).json({
+    success: true,
+    data: producer
+  })
+})
+
 
 //get producers by types /api/v1/producers/types/?
 export const getProdcuersByTypes = catchAsyncError(async (req, res, next) => {

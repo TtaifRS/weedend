@@ -21,10 +21,6 @@ const producerSchema = new Schema({
     type: Boolean,
     default: false
   },
-  organic: {
-    type: Boolean,
-    default: false
-  },
   flowers: {
     type: Boolean,
     default: false
@@ -62,6 +58,8 @@ const producerSchema = new Schema({
     default: false
   },
   additionalInfo: String
+}, {
+  timestamps: true
 })
 
 

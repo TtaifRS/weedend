@@ -683,7 +683,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               micro: producer.micro === true ? "yes" : "no",
               handTrimmed: producer.handTrimmed === true ? "yes" : "no",
@@ -707,7 +707,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               micro: producer.micro === true ? "yes" : "no",
               handTrimmed: producer.handTrimmed === true ? "yes" : "no",
@@ -732,7 +732,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
             }
           }
         }
@@ -752,7 +752,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               micro: producer.micro === true ? "yes" : "no",
               additionalInfo: producer.additionalInfo,
@@ -776,8 +776,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
-              variants: false,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               additionalInfo: producer.additionalInfo,
             }
@@ -799,7 +798,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               additionalInfo: producer.additionalInfo,
 
@@ -822,7 +821,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               micro: producer.micro === true ? "yes" : "no",
               additionalInfo: producer.additionalInfo,
@@ -845,7 +844,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               additionalInfo: producer.additionalInfo,
             }
@@ -867,7 +866,7 @@ export const updateProducer = catchAsyncError(async (req, res, next) => {
         {
           $set: {
             weedEndData: {
-              producer: producerName,
+              producerName,
               organic: producer.organic === true ? "yes" : "no",
               additionalInfo: producer.additionalInfo,
             }

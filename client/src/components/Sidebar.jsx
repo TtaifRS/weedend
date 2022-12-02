@@ -4,6 +4,7 @@ import { BiMenu } from 'react-icons/bi';
 import { AiOutlineClose, AiFillDatabase } from 'react-icons/ai';
 import { RiDashboardFill, RiUser2Fill, RiUserAddFill } from 'react-icons/ri';
 import { GiChestnutLeaf } from 'react-icons/gi';
+import { MdInventory } from 'react-icons/md';
 import UserDropDown from './UserDropDown';
 
 const Sidebar = () => {
@@ -80,6 +81,12 @@ const Sidebar = () => {
               <NavLink end className={({ isActive }) => (isActive ? `${activeLink} text-xs flex uppercase py-3 font-bold items-center` : `${inActiveLink} text-xs flex uppercase py-3 font-bold items-center`)} to="/fields">
                 <AiFillDatabase className="text-sm mr-2" />
                 Fields
+              </NavLink>
+            </li>
+            <li className="items-center">
+              <NavLink end className={({ isActive }) => (isActive ? `${activeLink} text-xs flex uppercase py-3 font-bold items-center` : `${inActiveLink} text-xs flex uppercase py-3 font-bold items-center`)} to="/producers">
+                <MdInventory className="text-sm mr-2" />
+                Producers
               </NavLink>
             </li>
 

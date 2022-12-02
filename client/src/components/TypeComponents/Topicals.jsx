@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
-import React, { useState } from 'react';
-import { useGetSingleProduct, useGetWeedEndData, useFieldStore } from '../../store';
+import React, { useEffect, useState } from 'react';
+import { useGetSingleProduct, useGetWeedEndData, useFieldStore, useProducerByTypeStore } from '../../store';
 import { Input, SelectInput } from '../InputComponent';
 
 import Loader from '../Loader';
@@ -9,6 +9,14 @@ const Topicals = () => {
   const fields = useFieldStore((state) => state.fields);
   const loading = useFieldStore((state) => state.loading);
   const product = useGetSingleProduct((state) => state.product);
+  const fetchProducerByType = useProducerByTypeStore((state) => state.fetchProducersByType);
+
+  useEffect(() => {
+    const fetch = async () => {
+      await fetchProducerByType('topicals');
+    };
+    fetch();
+  }, []);
 
   const defaultValue = [
     {

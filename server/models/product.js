@@ -47,7 +47,7 @@ const productSchema = new Schema({
   types: {
     type: String,
     enum: {
-      values: ['Defaults', 'Flowers', 'Pre-Rolls', 'Vapable', 'Concentrates', 'Beverages', 'Edibles', 'Oils', 'Topicals', 'Seeds', 'Producers'],
+      values: ['Defaults', 'Flowers', 'Pre-Rolls', 'Vapable', 'Concentrates', 'Beverages', 'Edibles', 'Oils', 'Topicals', 'Seeds'],
       message: 'Please select correct types',
     },
     default: 'Defaults'

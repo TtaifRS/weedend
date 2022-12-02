@@ -5,7 +5,7 @@ import dot from 'dot-object';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useParams } from 'react-router-dom';
-import { useGetSingleProduct, useTokenStore, useGetWeedEndData, useFieldStore } from '../store';
+import { useGetSingleProduct, useTokenStore, useGetWeedEndData, useFieldStore, useProducerByTypeStore } from '../store';
 import { types } from '../data/datatable';
 import Button from './Button';
 import Loader from './Loader';
@@ -32,11 +32,21 @@ const ProductForm = () => {
   const weedEndData = useGetWeedEndData((state) => state.weedEndData);
   const resetWeedEndData = useGetWeedEndData((state) => state.resetWeedEndData);
   const fetchFields = useFieldStore((state) => state.fetchFields);
+  const producersByType = useProducerByTypeStore((state) => state.producerNameByType);
+
+  const defaultProducer = [{
+    id: -1,
+    label: 'Select a producer',
+    value: 'none',
+  }];
+
+  const producers = [...defaultProducer, ...producersByType];
 
   const typeValue = types.find((type) => type.value);
-
+  const producerValue = producers.find((producer) => producer.value);
   // react state
   // eslint-disable-next-line no-unused-vars
+  const [currentProducerValue, setCurrentProducerValue] = useState(producerValue);
   const [currentTypeValue, setCurrentTypeValue] = useState(typeValue);
   const [addKey, setAddKey] = useState([]);
   const [addValue, setAddValue] = useState([]);
@@ -237,6 +247,29 @@ const ProductForm = () => {
       toast.error('Nothing to update');
     }
   };
+
+  const handleProducer = (async () => {
+    if (currentProducerValue.value !== 'none') {
+      const producer = {
+        producerName: currentProducerValue.value,
+      };
+
+      const updateProducer = await axiosInstance({
+        method: 'put',
+        url: `/product/producer/${id}`,
+        data: producer,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (updateProducer.data.success) {
+        setUpdateClick(!updateClick);
+      }
+    } else {
+      toast.error('choose a producer');
+    }
+  });
   if (!loading && product._id === id) {
     const price = priceDecimal(product.price.toString());
     let data = [];
@@ -372,29 +405,58 @@ const ProductForm = () => {
             </p>
             <div className="flex flex-col flex-wrap">
               <div className="w-full lg:w-6/12 px-4">
-                <div className="relative flex justify-between items-center w-full mb-3">
-                  <div className="block uppercase text-black-600 text-xs font-bold mb-2">
-                    Types
-                  </div>
-                  <div className="block uppercase text-green-600 text-xs font-bold mb-2">
-                    {product.types}
-                  </div>
-                  <div className="block w-1/2 uppercase text-green-600 text-xs font-bold mb-2">
-                    <Select
+                <div>
+                  <div className="relative flex justify-between items-center w-full mb-3">
+                    <div className="block uppercase text-black-600 text-xs font-bold mb-2">
+                      Types
+                    </div>
+                    <div className="block uppercase text-green-600 text-xs font-bold mb-2">
+                      {product.types}
+                    </div>
+                    <div className="block w-1/2 uppercase text-green-600 text-xs font-bold mb-2">
+                      <Select
           // className="flex-1"
-                      options={types}
-                      selectedOption={currentTypeValue}
-                      handelChange={(event) => {
-                        setCurrentTypeValue(event);
+                        options={types}
+                        selectedOption={currentTypeValue}
+                        handelChange={(event) => {
+                          setCurrentTypeValue(event);
 
-                        setInputValue({
-                          ...inputValue,
-                          updated: true,
-                          types: event.value,
-                        });
-                      }}
-                    />
+                          setInputValue({
+                            ...inputValue,
+                            updated: true,
+                            types: event.value,
+                          });
+                        }}
+                      />
+                    </div>
                   </div>
+                  {
+                    product.types !== 'Defaults' ? (
+                      <div className="relative flex flex-col justify-between items-center w-full mb-3">
+                        <div className="flex justify-between items-center w-full mb-3">
+                          <div className="block uppercase text-black-600 text-xs font-bold mb-2">
+                            Producer Name
+                          </div>
+                          <div className="block uppercase text-green-600 text-xs font-bold mb-2">
+                            {product.weedEndData.producerName ? product.weedEndData.producerName : 'None'}
+                          </div>
+                          <div className="block w-1/2 uppercase text-green-600 text-xs font-bold mb-2">
+                            <Select
+          // className="flex-1"
+                              options={producers}
+                              selectedOption={currentProducerValue}
+                              handelChange={(event) => {
+                                setCurrentProducerValue(event);
+                              }}
+                            />
+                          </div>
+                        </div>
+                        <div className=" w-full flex justify-end">
+                          <Button handleClick={handleProducer} btnName="update producer" classStyles="text-black active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150" />
+                        </div>
+                      </div>
+                    ) : null
+                  }
                 </div>
               </div>
 
